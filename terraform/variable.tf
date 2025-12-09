@@ -19,3 +19,7 @@ locals {
         }
     }
 }
+
+output "image_registry_url" {
+  value = aws_ecr_repository.watchtower_repository.repository_url
+}
