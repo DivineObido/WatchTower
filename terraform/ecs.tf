@@ -44,20 +44,47 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
-data "aws_ecs_task_definition" "task" {
-  task_definition = "watchTower-task"
+resource "aws_ecs_task_definition" "task" {
+  family = "watchTower-task"
+  network_mode = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu = "256"
+  memory = "512"
+  execution_role_arn = aws_iam_role.ecs_execution_role.arn
+  container_definitions = jsonencode([
+    {
+      name = "watchtower-container"
+      image = "${aws_ecr_repository.watchtower_repository.repository_url}:latest"
+      essential = true
+      memory = 512
+      cpu = 256
+      portMappings = [
+        {
+          containerPort = 80
+          hostPort = 80
+          protocol = "tcp"
+        }
+      ]
+    }
+  ])
 }
 
 resource "aws_ecs_service" "watchTower_service" {
   name = "watchTower-ecs-service"
   cluster = aws_ecs_cluster.watchTower_cluster.id
-  task_definition = data.aws_ecs_task_definition.task.arn
+  task_definition = aws_ecs_task_definition.task.arn
   desired_count = 1
   launch_type = "FARGATE"
 
-   network_configuration {
-     subnets = [for subnet in aws_subnet.watchtower_subnet : subnet.id]
-     assign_public_ip = true
-     security_groups = [aws_security_group.ecs_sg.id]
-   }
+  network_configuration {
+    subnets = [for subnet in aws_subnet.watchtower_subnet : subnet.id]
+    assign_public_ip = true
+    security_groups = [aws_security_group.ecs_sg.id]
+  }
+
+  load_balancer {
+    target_group_arn = aws_alb_target_group.watchtower_tg.arn
+    container_name = "watchtower-container"
+    container_port = 80
+  }
 }

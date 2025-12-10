@@ -10,7 +10,7 @@
     "containerDefinitions": [
         {
             "name": "watchtower-container",
-            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/image-registry:latest",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:latest",
             "essential": true,
             "memory": 512,
             "cpu": 256,

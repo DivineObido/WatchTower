@@ -56,11 +56,13 @@ resource "aws_alb_listener" "https_listener" {
   load_balancer_arn = aws_alb.watchTower_alb.arn
   port = 443
   protocol = "HTTPS"
-   ssl_policy = "ELBSecurityPolicy-2016-08"
-   default_action {
-     type = "forward"
-     target_group_arn = aws_alb_target_group.watchtower_tg.arn
-   }
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+
+  certificate_arn = aws_acm_certificate.ssl_cert.arn
+  default_action {
+    type = "forward"
+    target_group_arn = aws_alb_target_group.watchtower_tg.arn
+  }
 }
 
 resource "aws_alb_listener" "http_listener" {
