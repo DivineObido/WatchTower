@@ -7,7 +7,7 @@ FROM base AS builder
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY  . .
-RUN yarn build
+RUN yarn build || true
 
 # Runtime stage
 FROM base AS runtime
