@@ -5,9 +5,9 @@ WORKDIR /home/node/app
 # Builder stage
 FROM base AS builder 
 ENV NEXT_BUILD=true
-COPY package.json yarn.lock ./
+COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --frozen-lockfile
-COPY  . .
+COPY  e-commerce/ .
 RUN NODE_ENV=production yarn build 
 
 # Runtime stage
@@ -17,7 +17,7 @@ ENV PAYLOAD_CONFIG_PATH=dist/payload.config.js
 WORKDIR /home/node/app
 
 # Install only production dependencies
-COPY package.json yarn.lock ./
+COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --production --frozen-lockfile
 
 # Copy built files from builder stage
