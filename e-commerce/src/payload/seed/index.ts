@@ -160,7 +160,7 @@ export const seed = async (payload: Payload): Promise<void> => {
       collection: 'products',
       id: product3Doc.id,
       data: {
-        relatedProducts: [product1Doc.id, product2Doc.id], 
+        relatedProducts: [product1Doc.id, product2Doc.id],
       },
     }),
   ])
@@ -217,7 +217,7 @@ export const seed = async (payload: Payload): Promise<void> => {
         {
           link: {
             type: 'reference',
-            reference:  {
+            reference: {
               relationTo: 'pages',
               value: productsPageDoc.id,
             },
