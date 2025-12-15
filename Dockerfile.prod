@@ -7,7 +7,7 @@ FROM base AS builder
 ENV NODE_ENV=production
 ENV NEXT_BUILD=true
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 COPY  . .
 RUN yarn build 
 
@@ -19,7 +19,7 @@ WORKDIR /home/node/app
 
 # Install only production dependencies
 COPY package.json yarn.lock ./
-RUN yarn install --production
+RUN yarn install --production --frozen-lockfile
 
 # Copy built files from builder stage
 COPY --from=builder /home/node/app/.next ./.next
