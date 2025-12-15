@@ -1,5 +1,5 @@
 {
-    "family": "autoship_task",
+    "family": "watchTower-task",
     "networkMode": "awsvpc",
     "requiresCompatibilities": [
         "FARGATE"
