@@ -4,12 +4,10 @@ WORKDIR /home/node/app
 
 # Builder stage
 FROM base AS builder 
-ARG PAYLOAD_SECRET
-ENV PAYLOAD_SECRET=$PAYLOAD_SECRET
 COPY package.json yarn.lock ./
 RUN yarn install
 COPY  . .
-RUN yarn build || true
+RUN yarn build 
 
 # Runtime stage
 FROM base AS runtime

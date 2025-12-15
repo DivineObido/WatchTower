@@ -22,5 +22,12 @@
                 }
             ]
         }
+    ],
+
+    "environment": [
+        {
+            "name": "PAYLOAD_SECRET",
+            "value": "SuperSecretKey123"
+        }
     ]
 }
