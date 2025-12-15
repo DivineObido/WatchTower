@@ -31,7 +31,7 @@ export const seed = async (payload: Payload): Promise<void> => {
 
   const mediaDir = path.resolve(__dirname, '../../media')
   if (fs.existsSync(mediaDir)) {
-    fs.rmdirSync(mediaDir, { recursive: true })
+    fs.rmSync(mediaDir, { recursive: true, force: true })
   }
 
   payload.logger.info(`— Clearing collections and globals...`)
@@ -72,15 +72,15 @@ export const seed = async (payload: Payload): Promise<void> => {
     }),
   ])
 
-  let image1ID = image1Doc.id
-  let image2ID = image2Doc.id
-  let image3ID = image3Doc.id
+  let image1ID = String(image1Doc.id)
+  let image2ID = String(image2Doc.id)
+  let image3ID = String(image3Doc.id)
 
-  if (payload.db.defaultIDType === 'text') {
-    image1ID = `"${image1ID}"`
-    image2ID = `"${image2ID}"`
-    image3ID = `"${image3ID}"`
-  }
+  // if (payload.db.defaultIDType === 'text') {
+  //   image1ID = `"${image1ID}"`
+  //   image2ID = `"${image2ID}"`
+  //   image3ID = `"${image3ID}"`
+  // }
 
   payload.logger.info(`— Seeding categories...`)
 
@@ -146,21 +146,30 @@ export const seed = async (payload: Payload): Promise<void> => {
       collection: 'products',
       id: product1Doc.id,
       data: {
-        relatedProducts: [product2Doc.id, product3Doc.id],
+        relatedProducts: [
+          { relationTo: 'products', value: product2Doc.id },
+          { relationTo: 'products', value: product3Doc.id },
+        ],
       },
     }),
     await payload.update({
       collection: 'products',
       id: product2Doc.id,
       data: {
-        relatedProducts: [product1Doc.id, product3Doc.id],
+        relatedProducts: [
+          { relationTo: 'products', value: product1Doc.id },
+          { relationTo: 'products', value: product3Doc.id },
+        ]
       },
     }),
     await payload.update({
       collection: 'products',
       id: product3Doc.id,
       data: {
-        relatedProducts: [product1Doc.id, product2Doc.id],
+       relatedProducts: [
+          { relationTo: 'products', value: product2Doc.id },
+          { relationTo: 'products', value: product1Doc.id },
+        ]
       },
     }),
   ])
@@ -172,11 +181,11 @@ export const seed = async (payload: Payload): Promise<void> => {
     data: productsPage,
   })
 
-  let productsPageID = productsPageDoc.id
+  let productsPageID = String(productsPageDoc.id)
 
-  if (payload.db.defaultIDType === 'text') {
-    productsPageID = `"${productsPageID}"`
-  }
+  // if (payload.db.defaultIDType === 'text') {
+  //   productsPageID = `"${productsPageID}"`
+  // }
 
   payload.logger.info(`— Seeding home page...`)
 
@@ -204,7 +213,9 @@ export const seed = async (payload: Payload): Promise<void> => {
   await payload.updateGlobal({
     slug: 'settings',
     data: {
-      productsPage: productsPageDoc.id,
+      productsPage: {
+        productsPage: productsPageDoc.id, 
+      },
     },
   })
 
@@ -217,7 +228,7 @@ export const seed = async (payload: Payload): Promise<void> => {
         {
           link: {
             type: 'reference',
-            reference: {
+            reference:  {
               relationTo: 'pages',
               value: productsPageDoc.id,
             },
