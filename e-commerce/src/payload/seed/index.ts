@@ -142,34 +142,25 @@ export const seed = async (payload: Payload): Promise<void> => {
   // update each product with related products
 
   await Promise.all([
-    await payload.update({
+    payload.update({
       collection: 'products',
       id: product1Doc.id,
       data: {
-        relatedProducts: [
-          { relationTo: 'products', value: product2Doc.id },
-          { relationTo: 'products', value: product3Doc.id },
-        ],
+        relatedProducts: [product2Doc.id, product3Doc.id],
       },
     }),
-    await payload.update({
+    payload.update({
       collection: 'products',
       id: product2Doc.id,
       data: {
-        relatedProducts: [
-          { relationTo: 'products', value: product1Doc.id },
-          { relationTo: 'products', value: product3Doc.id },
-        ]
+        relatedProducts: [product1Doc.id, product3Doc.id],
       },
     }),
-    await payload.update({
+    payload.update({
       collection: 'products',
       id: product3Doc.id,
       data: {
-       relatedProducts: [
-          { relationTo: 'products', value: product2Doc.id },
-          { relationTo: 'products', value: product1Doc.id },
-        ]
+        relatedProducts: [product1Doc.id, product2Doc.id], 
       },
     }),
   ])
@@ -213,9 +204,7 @@ export const seed = async (payload: Payload): Promise<void> => {
   await payload.updateGlobal({
     slug: 'settings',
     data: {
-      productsPage: {
-        productsPage: productsPageDoc.id, 
-      },
+      productsPage: productsPageDoc.id,
     },
   })
 
