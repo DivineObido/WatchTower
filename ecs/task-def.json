@@ -20,14 +20,13 @@
                     "hostPort": 80,
                     "protocol": "tcp"
                 }
+            ],   
+            "environment": [
+                {
+                    "name": "PAYLOAD_SECRET",
+                    "value": "SuperSecretKey123"
+                }
             ]
-        }
-    ],
-
-    "environment": [
-        {
-            "name": "PAYLOAD_SECRET",
-            "value": "SuperSecretKey123"
         }
     ]
 }
