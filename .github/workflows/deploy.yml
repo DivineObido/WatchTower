@@ -68,6 +68,12 @@ jobs:
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
                 echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+            - name: Debug outputs
+              run: |
+                echo "Container name: ${{ env.CONTAINER_NAME }}"
+                echo "Built image: ${{ steps.build-image.outputs.image }}"
+                echo "Task definition path: ecs/task-def.json"
+
             - name: Add image to ECS task definition
               id: task-def
               uses: aws-actions/amazon-ecs-render-task-definition@v1
