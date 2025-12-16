@@ -81,6 +81,11 @@ jobs:
                 task-definition: ecs/task-def.json
                 container-name: ${{ env.CONTAINER_NAME}}
                 image: ${{ steps.build-image.outputs.image}}
+            
+            - name: Debug rendered task definition
+              run: |
+                echo "Rendered task definition:"
+                cat ${{ steps.task-def.outputs.task-definition }}
 
             - name: Deploy task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
