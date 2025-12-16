@@ -25,6 +25,22 @@
                 {
                     "name": "PAYLOAD_SECRET",
                     "value": "SuperSecretKey123"
+                },
+                {
+                    "name": "NODE_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "PAYLOAD_CONFIG_PATH",
+                    "value": "dist/payload/payload.config.js"
+                },
+                {
+                    "name": "PAYLOAD_PUBLIC_SERVER_URL",
+                    "value": "http://buynsell.work.gd"
+                },
+                {
+                    "name": "DATABASE_URI",
+                    "value": "mongodb://127.0.0.1/payload-template-ecommerce"
                 }
             ]
         }

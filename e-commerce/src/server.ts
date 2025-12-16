@@ -13,7 +13,7 @@ import payload from 'payload'
 import { seed } from './payload/seed'
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 80 
 
 const start = async (): Promise<void> => {
   await payload.init({
@@ -47,6 +47,10 @@ const start = async (): Promise<void> => {
   const nextHandler = nextApp.getRequestHandler()
 
   app.use((req, res) => nextHandler(req, res))
+
+  app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
