@@ -42,16 +42,7 @@
                     "name": "DATABASE_URI",
                     "value": "mongodb://127.0.0.1/payload-template-ecommerce"
                 }
-            ],
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "/ecs/watchtower",
-                    "awslogs-region": "us-east-1",
-                    "awslogs-stream-prefix": "ecs",
-                    "awslogs-create-group": "true"
-                }
-            }
+            ]
         }
     ]
 }
