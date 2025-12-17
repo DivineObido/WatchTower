@@ -69,6 +69,7 @@ resource "aws_security_group" "ecs_sg" {
 #   ])
 # }
 
+
 data "aws_ecs_task_definition" "task" {
   task_definition = "watchTower-task"
 }
