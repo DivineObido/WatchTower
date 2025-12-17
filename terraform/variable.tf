@@ -23,3 +23,14 @@ locals {
 output "image_registry_url" {
   value = aws_ecr_repository.watchtower_repository.repository_url
 }
+
+variable "mongoDB_uri" {
+  description = "The MongoDB connection URI for the WatchTower"
+  type        = string
+}
+
+variable "payload_secret" {
+  description = "payload secret"
+  type = string
+}
+

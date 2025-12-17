@@ -20,12 +20,19 @@
                     "hostPort": 80,
                     "protocol": "tcp"
                 }
-            ],   
-            "environment": [
+            ], 
+            "secrets" : [
                 {
-                    "name": "PAYLOAD_SECRET",
-                    "value": "SuperSecretKey123"
+                   "name": "PAYLOAD_SECRET",
+                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_payload_secret-dQJXGE"
                 },
+                {
+                    "name": "DATABASE_URI",
+                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_database_uri_secret-iwtEwv"
+                }
+            ],
+
+            "environment": [
                 {
                     "name": "NODE_ENV",
                     "value": "production"
@@ -37,10 +44,6 @@
                 {
                     "name": "PAYLOAD_PUBLIC_SERVER_URL",
                     "value": "https://buynsell.work.gd"
-                },
-                {
-                    "name": "DATABASE_URI",
-                    "value": "mongodb+srv://divineobido64_db_user:GKhU4wJrYZfceTXl@e-commercedb.w2bpmzc.mongodb.net/?appName=e-commercedb"
                 }
             ], 
             "logConfiguration": {
