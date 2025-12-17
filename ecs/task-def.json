@@ -24,7 +24,7 @@
             "secrets" : [
                 {
                    "name": "PAYLOAD_SECRET",
-                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_payload_secret-dQJXGE"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_payload_secret-dQJXGE"
                 },
                 {
                     "name": "DATABASE_URI",
