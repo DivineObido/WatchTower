@@ -40,7 +40,7 @@
                 },
                 {
                     "name": "DATABASE_URI",
-                    "value": "mongodb://127.0.0.1/payload-template-ecommerce"
+                    "value": "mongodb+srv://divineobido64_db_user:GKhU4wJrYZfceTXl@e-commercedb.w2bpmzc.mongodb.net/?appName=e-commercedb"
                 }
             ], 
             "logConfiguration": {
