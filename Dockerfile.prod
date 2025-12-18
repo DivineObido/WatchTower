@@ -18,7 +18,7 @@ WORKDIR /home/node/app
 
 # Install only production dependencies
 COPY e-commerce/package.json e-commerce/yarn.lock ./
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 # Copy built files from builder stage
 COPY --from=builder /home/node/app/.next ./.next
