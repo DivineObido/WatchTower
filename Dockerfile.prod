@@ -8,7 +8,7 @@ ENV NEXT_BUILD=true
 COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY  e-commerce/ .
-RUN NODE_ENV=production yarn build 
+RUN NODE_ENV=production yarn build && yarn payload build
 
 # Runtime stage
 FROM base AS runtime
@@ -21,6 +21,7 @@ COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --production --frozen-lockfile
 
 # Copy built files from builder stage
+COPY --from=builder /home/node/app/dist/admin ./dist/admin
 COPY --from=builder /home/node/app/.next ./.next
 COPY --from=builder /home/node/app/dist ./dist
 COPY --from=builder /home/node/app/public ./public
