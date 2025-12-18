@@ -50,14 +50,9 @@
                     "value": "https://www.buynsell.work.gd"
                 },
                 {
-                    "name": "PAYLOAD_ADMIN_EMAIL",
-                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:admin_email_secret-2FN6FC"
-                },
-                {
-                    "name": "PAYLOAD_ADMIN_PASSWORD",
-                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:admin_password_secret-X03nOM"
+                    "name": "PORT",
+                    "value": "80"
                 }
-
             ], 
             "logConfiguration": {
                 "logDriver": "awslogs",
