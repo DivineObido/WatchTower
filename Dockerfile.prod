@@ -5,6 +5,7 @@ WORKDIR /home/node/app
 # Builder stage
 FROM base AS builder 
 ENV NEXT_BUILD=true
+ENV PAYLOAD_CONFIG_PATH=src/payload/payload.config.ts
 COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY  e-commerce/ .
