@@ -42,7 +42,7 @@ dotenv.config({
 export default buildConfig({
   admin: {
     user: Users.slug,
-    disable : false,
+    disable: false,
     bundler: webpackBundler(), // bundler-config
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
