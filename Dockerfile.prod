@@ -25,10 +25,14 @@ COPY --from=builder /home/node/app/.next ./.next
 COPY --from=builder /home/node/app/dist ./dist
 COPY --from=builder /home/node/app/public ./public
 
+# Copy startup script and make it executable
+COPY startup.sh ./startup.sh
+RUN chmod +x ./startup.sh
+
 # Expose the application port
 EXPOSE 80
 
-ENTRYPOINT ["/usr/src/app/startup.sh"]
+ENTRYPOINT ["./startup.sh"]
 
 # Start the application
 CMD [ "node", "dist/server.js" ]
