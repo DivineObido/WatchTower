@@ -34,3 +34,12 @@ variable "payload_secret" {
   type = string
 }
 
+variable "admin_email" {
+  description = "admin email address"
+  type = string
+}
+
+variable "admin_password" {
+  description = "admin passowrd"
+  type = string
+}

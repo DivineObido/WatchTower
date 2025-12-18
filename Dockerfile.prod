@@ -28,5 +28,7 @@ COPY --from=builder /home/node/app/public ./public
 # Expose the application port
 EXPOSE 80
 
+ENTRYPOINT ["/usr/src/app/startup.sh"]
+
 # Start the application
 CMD [ "node", "dist/server.js" ]

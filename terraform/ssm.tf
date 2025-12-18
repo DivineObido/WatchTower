@@ -22,11 +22,39 @@ resource "aws_secretsmanager_secret" "payload_secret" {
   }
 }
 
+
 resource "aws_secretsmanager_secret_version" "payload_secret_version" {
   secret_id = aws_secretsmanager_secret.payload_secret.id
   secret_string = var.payload_secret
 }
 
+resource "aws_secretsmanager_secret" "admin_email" {
+  name = "admin_email_secret"
+  description = "Admin email for WatchTower"
+  tags = {
+    Name = "watchTower Admin Email Secret"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "admin_email_version" {
+  secret_id = aws_secretsmanager_secret.admin_email.id
+  secret_string = var.admin_email
+}
+
+resource "aws_secretsmanager_secret" "admin_password" {
+  name = "admin_password_secret"
+  description = "Admin password for WatchTower"
+  tags = {
+    Name = "watchTower Admin Password Secret"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "admin_password_version" {
+  secret_id = aws_secretsmanager_secret.admin_password.id
+  secret_string = var.admin_password
+}
 resource "aws_iam_role_policy" "ssm_role_policy" {
   name = "ecs_ssm_access_policy"
   role = aws_iam_role.ecs_execution_role.name
