@@ -1,11 +1,10 @@
-process.on('unhandledRejection', (reason) => {
+process.on('unhandledRejection', reason => {
   console.error('UNHANDLED REJECTION:', reason)
 })
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', err => {
   console.error('UNCAUGHT EXCEPTION:', err)
 })
-
 
 // import dotenv from 'dotenv'
 import next from 'next'
@@ -53,7 +52,6 @@ const start = async (): Promise<void> => {
     dev: process.env.NODE_ENV !== 'production',
     dir: path.join(__dirname, '../'),
   })
-
 
   const nextHandler = nextApp.getRequestHandler()
 
