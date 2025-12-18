@@ -44,6 +44,10 @@
                 {
                     "name": "PAYLOAD_PUBLIC_SERVER_URL",
                     "value": "https://www.buynsell.work.gd"
+                },
+                {
+                    "name": "NEXT_PUBLIC_SERVER_URL",
+                    "value": "https://www.buynsell.work.gd"
                 }
             ], 
             "logConfiguration": {
