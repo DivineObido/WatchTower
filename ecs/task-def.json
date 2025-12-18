@@ -28,7 +28,7 @@
                 },
                 {
                     "name": "DATABASE_URI",
-                    "value": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_database_uri_secret-iwtEwv"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_database_uri_secret-iwtEwv"
                 }
             ],
 
