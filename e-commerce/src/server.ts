@@ -1,22 +1,11 @@
-/* eslint-disable no-console */
-/* eslint-disable simple-import-sort/imports */
-
-process.on('unhandledRejection', reason => {
-  console.error('UNHANDLED REJECTION:', reason)
-})
-
-process.on('uncaughtException', err => {
-  console.error('UNCAUGHT EXCEPTION:', err)
-})
-
-// import dotenv from 'dotenv'
+import dotenv from 'dotenv'
 import next from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 
-// dotenv.config({
-//   path: path.resolve(__dirname, '../.env'),
-// })
+dotenv.config({
+  path: path.resolve(__dirname, '../.env'),
+})
 
 import express from 'express'
 import payload from 'payload'

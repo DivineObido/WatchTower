@@ -1,3 +1,4 @@
+const { withPayload } = require('@payloadcms/next/withPayload')
 /** @type {import('next').NextConfig} */
 const ContentSecurityPolicy = require('./csp')
 const redirects = require('./redirects')
@@ -6,7 +7,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: [ process.env.NEXT_PUBLIC_SERVER_URL, process.env.PAYLOAD_PUBLIC_SERVER_URL,'buynsell.work.gd', 'www.buynsell.work.gd']
+    domains: [
+      process.env.NEXT_PUBLIC_SERVER_URL,
+      process.env.PAYLOAD_PUBLIC_SERVER_URL,
+      'buynsell.work.gd',
+      'www.buynsell.work.gd',
+    ]
       .filter(Boolean)
       .map(url => url.replace(/https?:\/\//, '')),
   },
@@ -47,4 +53,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withPayload(nextConfig)
