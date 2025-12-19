@@ -1,4 +1,3 @@
-const { withPayload } = require('@payloadcms/next/withPayload')
 /** @type {import('next').NextConfig} */
 const ContentSecurityPolicy = require('./csp')
 const redirects = require('./redirects')
@@ -53,4 +52,4 @@ const nextConfig = {
   },
 }
 
-module.exports = withPayload(nextConfig)
+module.exports = nextConfig
