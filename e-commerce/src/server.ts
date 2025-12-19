@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import next from 'next'
+import createNextApp from 'next'
 import nextBuild from 'next/dist/build'
 import path from 'path'
 
@@ -40,7 +40,7 @@ const start = async (): Promise<void> => {
     return
   }
 
-  const nextApp = next({
+  const nextApp = createNextApp({
     dev: process.env.NODE_ENV !== 'production',
     dir: path.join(__dirname, '../'),
   })
