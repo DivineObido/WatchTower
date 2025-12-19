@@ -50,11 +50,11 @@ const start = async (): Promise<void> => {
   // app.use((req, res) => nextHandler(req, res))
 
   app.use((req, res, next) => {
-  if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
-    return next()
-  }
-  return nextHandler(req, res)
-})
+    if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
+      return next()
+    }
+    return nextHandler(req, res)
+  })
 
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' })
