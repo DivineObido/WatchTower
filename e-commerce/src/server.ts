@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable simple-import-sort/imports */
+
 process.on('unhandledRejection', reason => {
   console.error('UNHANDLED REJECTION:', reason)
 })
