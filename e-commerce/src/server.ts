@@ -47,21 +47,14 @@ const start = async (): Promise<void> => {
 
   const nextHandler = nextApp.getRequestHandler()
 
-  // app.use((req, res) => nextHandler(req, res))
-
-  app.use((req, res, next) => {
-    if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
-      return next()
-    }
-    return nextHandler(req, res)
-  })
-
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' })
   })
 
   nextApp.prepare().then(() => {
     payload.logger.info('Starting Next.js...')
+
+    app.use((req, res) => nextHandler(req, res))
 
     app.listen(PORT, async () => {
       payload.logger.info(`Next.js App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)
