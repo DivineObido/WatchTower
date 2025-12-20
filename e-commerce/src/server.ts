@@ -20,7 +20,6 @@ const start = async (): Promise<void> => {
     secret: process.env.PAYLOAD_SECRET || '',
     express: app,
     onInit: () => {
-      console.log('PAYLOAD INIT RAN')
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
     },
   })
