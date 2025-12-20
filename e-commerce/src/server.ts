@@ -48,14 +48,14 @@ const start = async (): Promise<void> => {
   })
 
   const nextHandler = nextApp.getRequestHandler()
-  
+
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' })
   })
 
   await nextApp.prepare()
   payload.logger.info('Starting Next.js...')
-  
+
   app.all('*', (req, res) => nextHandler(req, res))
 
   app.listen(PORT, async () => {
