@@ -48,19 +48,18 @@ const start = async (): Promise<void> => {
   })
 
   const nextHandler = nextApp.getRequestHandler()
-
+  
   app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' })
   })
 
-  nextApp.prepare().then(() => {
-    payload.logger.info('Starting Next.js...')
+  await nextApp.prepare()
+  payload.logger.info('Starting Next.js...')
+  
+  app.all('*', (req, res) => nextHandler(req, res))
 
-    app.get('*', (req, res) => nextHandler(req, res))
-
-    app.listen(PORT, async () => {
-      payload.logger.info(`Next.js App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)
-    })
+  app.listen(PORT, async () => {
+    payload.logger.info(`Next.js App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)
   })
 }
 
