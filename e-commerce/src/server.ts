@@ -24,8 +24,6 @@ const start = async (): Promise<void> => {
     },
   })
 
-  app.use('/api', payload.router)
-
   if (process.env.PAYLOAD_SEED === 'true') {
     await seed(payload)
     process.exit()
@@ -56,7 +54,7 @@ const start = async (): Promise<void> => {
   await nextApp.prepare()
   payload.logger.info('Starting Next.js...')
 
-  app.all('*', (req, res) => nextHandler(req, res))
+  // app.get('*', (req, res) => nextHandler(req, res))
 
   app.listen(PORT, async () => {
     payload.logger.info(`Next.js App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)
