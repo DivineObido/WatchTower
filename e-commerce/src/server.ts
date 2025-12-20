@@ -24,6 +24,8 @@ const start = async (): Promise<void> => {
     },
   })
 
+  app.use('/api', payload.router)
+
   if (process.env.PAYLOAD_SEED === 'true') {
     await seed(payload)
     process.exit()
