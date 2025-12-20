@@ -1,98 +1,98 @@
-name: Deploy e-commerce Application to ECS 
+# name: Deploy e-commerce Application to ECS 
 
-on:
-    push:
-        branches: [ "main" ]
-        paths-ignore:
-            - 'README.md'
-            - '**/*.md'
-    pull_request:
-        branches: [ "main" ]
-        paths-ignore:
-            - 'README.md'
-            - '**/*.md'
+# on:
+#     push:
+#         branches: [ "main" ]
+#         paths-ignore:
+#             - 'README.md'
+#             - '**/*.md'
+#     pull_request:
+#         branches: [ "main" ]
+#         paths-ignore:
+#             - 'README.md'
+#             - '**/*.md'
             
         
 
-permissions:
-    contents: read
+# permissions:
+#     contents: read
 
-jobs:
-    deploy:
-        name: Deploy to ECS
-        runs-on: ubuntu-latest
-        environment: production
+# jobs:
+#     deploy:
+#         name: Deploy to ECS
+#         runs-on: ubuntu-latest
+#         environment: production
 
-        env:
-            AWS_REGION: ${{ vars.AWS_REGION }}
-            ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
-            ECS_SERVICE: ${{ vars.ECS_SERVICE }}
-            ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-            CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
-        steps:
-            - name: Checkout_repository
-              uses: actions/checkout@v4
+#         env:
+#             AWS_REGION: ${{ vars.AWS_REGION }}
+#             ECS_CLUSTER: ${{ vars.ECS_CLUSTER }}
+#             ECS_SERVICE: ${{ vars.ECS_SERVICE }}
+#             ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+#             CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+#         steps:
+#             - name: Checkout_repository
+#               uses: actions/checkout@v4
 
-            - name: Configure_AWS_credentials
-              uses: aws-actions/configure-aws-credentials@v1
-              with:
-                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                aws-region: ${{ env.AWS_REGION }}
+#             - name: Configure_AWS_credentials
+#               uses: aws-actions/configure-aws-credentials@v1
+#               with:
+#                 aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#                 aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#                 aws-region: ${{ env.AWS_REGION }}
 
-            - name: Login to ECR
-              id: login-ecr
-              uses: aws-actions/amazon-ecr-login@v1
+#             - name: Login to ECR
+#               id: login-ecr
+#               uses: aws-actions/amazon-ecr-login@v1
 
-            - name: Build, tag, and push image to ECR
-              id: build-image
-              env:
-                ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-                ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-                IMAGE_TAG: ${{ github.sha }}
+#             - name: Build, tag, and push image to ECR
+#               id: build-image
+#               env:
+#                 ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#                 ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+#                 IMAGE_TAG: ${{ github.sha }}
 
-              run: |
-                set -euo pipefail
+#               run: |
+#                 set -euo pipefail
 
-                : ${ECR_REGISTRY:?ECR_REGISTRY is not set}
-                : ${ECR_REPOSITORY:?ECR_REPOSITORY is not set}
-                : ${IMAGE_TAG:?IMAGE_TAG is not set}
+#                 : ${ECR_REGISTRY:?ECR_REGISTRY is not set}
+#                 : ${ECR_REPOSITORY:?ECR_REPOSITORY is not set}
+#                 : ${IMAGE_TAG:?IMAGE_TAG is not set}
 
-                ECR_REGISTRY=$(echo $ECR_REGISTRY | xargs)
-                ECR_REPOSITORY=$(echo $ECR_REPOSITORY | xargs)
-                IMAGE_TAG=$(echo $IMAGE_TAG | xargs)
+#                 ECR_REGISTRY=$(echo $ECR_REGISTRY | xargs)
+#                 ECR_REPOSITORY=$(echo $ECR_REPOSITORY | xargs)
+#                 IMAGE_TAG=$(echo $IMAGE_TAG | xargs)
 
-                echo Building docker image...
-                docker build --no-cache -f Dockerfile.prod -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" . 
-                echo Pushing docker image to ECR...
-                docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-                echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+#                 echo Building docker image...
+#                 docker build --no-cache -f Dockerfile.prod -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" . 
+#                 echo Pushing docker image to ECR...
+#                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+#                 echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-            - name: Debug outputs
-              run: |
-                echo "Container name: ${{ env.CONTAINER_NAME }}"
-                echo "Built image: ${{ steps.build-image.outputs.image }}"
-                echo "Task definition path: ecs/task-def.json"
+#             - name: Debug outputs
+#               run: |
+#                 echo "Container name: ${{ env.CONTAINER_NAME }}"
+#                 echo "Built image: ${{ steps.build-image.outputs.image }}"
+#                 echo "Task definition path: ecs/task-def.json"
 
-            - name: Add image to ECS task definition
-              id: task-def
-              uses: aws-actions/amazon-ecs-render-task-definition@v1
-              with:
-                task-definition: ecs/task-def.json
-                container-name: ${{ env.CONTAINER_NAME}}
-                image: ${{ steps.build-image.outputs.image}}
+#             - name: Add image to ECS task definition
+#               id: task-def
+#               uses: aws-actions/amazon-ecs-render-task-definition@v1
+#               with:
+#                 task-definition: ecs/task-def.json
+#                 container-name: ${{ env.CONTAINER_NAME}}
+#                 image: ${{ steps.build-image.outputs.image}}
             
-            - name: Debug rendered task definition
-              run: |
-                echo "Rendered task definition:"
-                cat ${{ steps.task-def.outputs.task-definition }}
+#             - name: Debug rendered task definition
+#               run: |
+#                 echo "Rendered task definition:"
+#                 cat ${{ steps.task-def.outputs.task-definition }}
 
-            - name: Deploy task definition to ECS 
-              uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-              with:
-                task-definition: ${{ steps.task-def.outputs.task-definition }}
-                service: ${{ env.ECS_SERVICE }}
-                cluster: ${{ env.ECS_CLUSTER }}
-                wait-for-service-stability: true
+#             - name: Deploy task definition to ECS 
+#               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#               with:
+#                 task-definition: ${{ steps.task-def.outputs.task-definition }}
+#                 service: ${{ env.ECS_SERVICE }}
+#                 cluster: ${{ env.ECS_CLUSTER }}
+#                 wait-for-service-stability: true
 
 
