@@ -51,10 +51,15 @@ const start = async (): Promise<void> => {
     res.status(200).json({ status: 'ok' })
   })
 
+  app.use((req, res, next) => {
+    payload.logger.info(`Request: ${req.method} ${req.url}`)
+    next()
+  })
+
   await nextApp.prepare()
   payload.logger.info('Starting Next.js...')
 
-  // app.get('*', (req, res) => nextHandler(req, res))
+  app.get('*', (req, res) => nextHandler(req, res))
 
   app.listen(PORT, async () => {
     payload.logger.info(`Next.js App URL: ${process.env.PAYLOAD_PUBLIC_SERVER_URL}`)
