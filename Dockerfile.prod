@@ -4,6 +4,8 @@ WORKDIR /home/node/app
 
 # Builder stage
 FROM base AS builder 
+ENV PAYLOAD_PUBLIC_SERVER_URL=https://www.buynsell.work.gd
+ENV NEXT_PUBLIC_SERVER_URL=https://www.buynsell.work.gd
 ENV PAYLOAD_CONFIG_PATH=src/payload/payload.config.ts
 COPY e-commerce/package.json e-commerce/yarn.lock ./
 RUN yarn install --frozen-lockfile

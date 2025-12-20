@@ -40,6 +40,7 @@ dotenv.config({
 })
 
 export default buildConfig({
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL,
   admin: {
     user: Users.slug,
     disable: false,
@@ -82,7 +83,6 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   // database-adapter-config-end
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || process.env.NEXT_PUBLIC_SERVER_URL,
   routes: {
     admin: '/admin',
   },
