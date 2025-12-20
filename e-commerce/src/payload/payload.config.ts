@@ -55,6 +55,7 @@ export default buildConfig({
     webpack: config => {
       return {
         ...config,
+        mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
         resolve: {
           ...config.resolve,
           alias: {
