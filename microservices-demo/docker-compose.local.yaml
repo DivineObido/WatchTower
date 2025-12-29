@@ -1,0 +1,106 @@
+
+
+services:
+
+  frontend:
+    build: ./src/frontend
+    ports:
+      - "5500:8080"
+    depends_on:
+      - productcatalogservice
+      - checkoutservice
+      - recommendationservice
+      - currencyservice
+      - shippingservice
+      - paymentservice
+      - adservice
+    environment:
+      PRODUCT_CATALOG_SERVICE_ADDR: productcatalogservice:3550
+      CURRENCY_SERVICE_ADDR: currencyservice:7000
+      CART_SERVICE_ADDR: cartservice:7070
+      RECOMMENDATION_SERVICE_ADDR: recommendationservice:8080
+      SHIPPING_SERVICE_ADDR: shippingservice:50051
+      CHECKOUT_SERVICE_ADDR: checkoutservice:5050
+      SHOPPING_ASSISTANT_SERVICE_ADDR: shoppingassistantservice:8081
+      EMAIL_SERVICE_ADDR: emailservice:8080
+      AD_SERVICE_ADDR: adservice:9555
+      PAYMENT_SERVICE_ADDR: paymentservice:5000
+
+  productcatalogservice:
+    build: ./src/productcatalogservice
+    ports:
+      - "3550:3550"
+
+  cartservice:
+    build: 
+      context: ./src/cartservice/src
+    ports:
+      - "7070:7070"
+      
+
+  checkoutservice:
+    build: ./src/checkoutservice
+    ports:
+      - "5050:5050"
+    depends_on:
+      - paymentservice
+      - shippingservice
+      - emailservice
+      - currencyservice
+      - productcatalogservice
+      - cartservice
+    environment:
+      PRODUCT_CATALOG_SERVICE_ADDR: productcatalogservice:3550
+      SHIPPING_SERVICE_ADDR: shippingservice:50051
+      EMAIL_SERVICE_ADDR: emailservice:8080
+      PAYMENT_SERVICE_ADDR: paymentservice:5000
+      CURRENCY_SERVICE_ADDR: currencyservice:7000
+      CART_SERVICE_ADDR: cartservice:7070
+      
+  currencyservice:
+    build: ./src/currencyservice
+    ports:
+      - "7000:7000"
+    environment:
+      PORT: "7000"
+      DISABLE_PROFILER: "1"
+      DISABLE_TRACING: "1"
+
+
+  shippingservice:
+    build: ./src/shippingservice
+    ports:
+      - "50051:50051"
+
+  paymentservice:
+    build: ./src/paymentservice
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: "5000"
+      DISABLE_PROFILER: "1"
+      DISABLE_TRACING: "1"
+
+  shoppingassistanceservice:
+    build: ./src/shoppingassistantservice
+    ports:
+      - "8081:8081"
+
+  recommendationservice:
+    build: ./src/recommendationservice
+    environment:
+      PRODUCT_CATALOG_SERVICE_ADDR: productcatalogservice:3550
+    depends_on:
+      - productcatalogservice
+    ports:
+      - "8082:8080"
+
+  adservice:
+    build: ./src/adservice
+    ports:
+      - "9555:9555"
+
+  emailservice:
+    build: ./src/emailservice
+    ports:
+      - "8080:8080"
