@@ -17,6 +17,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
 FROM alpine:3.19
 WORKDIR /app
 COPY --from=builder /app/frontend/app .
+COPY --from=builder /app/frontend/templates ./templates
+ENV PORT 80
 EXPOSE 80
 CMD [ "./app" ]
 
