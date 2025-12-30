@@ -4,6 +4,7 @@ FROM golang:1.25-alpine AS builder
 # Build stage
 WORKDIR /app
 COPY microservices-demo/src/frontend/ ./frontend/
+WORKDIR /app/frontend
 # Check if go.mod is inistalled and install if it isn't
 RUN if [ ! -f go.mod ]; then go mod init frontend; fi 
 # Download dependencies
