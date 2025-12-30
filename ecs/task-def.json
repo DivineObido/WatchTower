@@ -21,34 +21,8 @@
                     "protocol": "tcp"
                 }
             ], 
-            "secrets" : [
-                {
-                   "name": "PAYLOAD_SECRET",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_payload_secret-dQJXGE"
-                },
-                {
-                    "name": "DATABASE_URI",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-1:288761756960:secret:watchTower_database_uri_secret-iwtEwv"
-                }
-            ],
 
             "environment": [
-                {
-                    "name": "NODE_ENV",
-                    "value": "production"
-                },
-                {
-                    "name": "PAYLOAD_CONFIG_PATH",
-                    "value": "dist/payload/payload.config.js"
-                },
-                {
-                    "name": "PAYLOAD_PUBLIC_SERVER_URL",
-                    "value": "https://www.buynsell.work.gd"
-                },
-                {
-                    "name": "NEXT_PUBLIC_SERVER_URL",
-                    "value": "https://www.buynsell.work.gd"
-                },
                 {
                     "name": "PORT",
                     "value": "80"
