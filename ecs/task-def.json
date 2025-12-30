@@ -26,6 +26,46 @@
                 {
                     "name": "PORT",
                     "value": "80"
+                },
+                {
+                    "name": "PRODUCT_CATALOG_SERVICE_ADDR",
+                    "value": "localhost:3550"
+                },
+                {
+                    "name": "CURRENCY_SERVICE_ADDR",
+                    "value": "localhost:7000"
+                },
+                {
+                    "name": "CART_SERVICE_ADDR",
+                    "value": "localhost:7070"
+                },
+                {
+                    "name": "RECOMMENDATION_SERVICE_ADDR",
+                    "value": "localhost:8080"
+                },
+                {
+                    "name": "SHIPPING_SERVICE_ADDR",
+                    "value": "localhost:50051"
+                },
+                {
+                    "name": "CHECKOUT_SERVICE_ADDR",
+                    "value": "localhost:5050"
+                },
+                {
+                    "name": "SHOPPING_ASSISTANT_SERVICE_ADDR",
+                    "value": "localhost:8081"
+                },
+                {
+                    "name": "EMAIL_SERVICE_ADDR",
+                    "value": "localhost:8080"
+                },
+                {
+                    "name": "AD_SERVICE_ADDR",
+                    "value": "localhost:9555"
+                },
+                {
+                    "name": "PAYMENT_SERVICE_ADDR",
+                    "value": "localhost:5000"
                 }
             ], 
             "logConfiguration": {
