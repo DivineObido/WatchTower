@@ -53,16 +53,102 @@ resource "aws_security_group" "ecs_sg" {
 #   execution_role_arn = aws_iam_role.ecs_execution_role.arn
 #   container_definitions = jsonencode([
 #     {
-#       name = "watchtower-container"
-#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:latest"
+#       name = "frontend"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:frontend-latest"
 #       essential = true
-#       memory = 512
-#       cpu = 256
 #       portMappings = [
 #         {
 #           containerPort = 80
-#           hostPort = 80
-#           protocol = "tcp"
+#         }
+#       ]
+#     },
+#     {
+#       name = "emailservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:email-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 8080
+#         }
+#       ]
+#     },
+#     {
+#       name = "shoppingassistantservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:shopping-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 8081
+#         }
+#       ]
+#     },
+#     {
+#       name = "checkoutservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:checkout-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 5050
+#         }
+#       ]
+#     },
+#     {
+#       name = "shippingservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:shipping-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 50051
+#         }
+#       ]
+#     },
+#     {
+#       name = "recommendationservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:recommendation-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 8082
+#         }
+#       ]
+#     },
+#     {
+#       name = "cartservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:cart-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 7070
+#         }
+#       ]
+#     },
+#     {
+#       name = "currencyservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:currency-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 7000
+#         }
+#       ]
+#     },
+#     {
+#       name = "productcatalogservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:product-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 3550
+#         }
+#       ]
+#     },
+#     {
+#       name = "paymentservice"
+#       image = "${aws_ecr_repository.watchtower_repository.repository_url}:payment-latest"
+#       essential = true
+#       portMappings = [
+#         {
+#           containerPort = 5000
 #         }
 #       ]
 #     }
@@ -89,7 +175,7 @@ resource "aws_ecs_service" "watchTower_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.watchtower_tg.arn
-    container_name = "watchtower-container"
+    container_name = "frontend"
     container_port = 80
   }
 }

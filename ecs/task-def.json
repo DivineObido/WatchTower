@@ -9,71 +9,182 @@
     "executionRoleArn": "arn:aws:iam::288761756960:role/ecsExecutionRole",
     "containerDefinitions": [
         {
-            "name": "watchtower-container",
-            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:latest",
-            "essential": true,
+            "name": "frontend",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:frontend-latest",
+            "essential": "true",
             "memory": 512,
             "cpu": 256,
-            "portMappings": [
-                {
-                    "containerPort": 80,
-                    "hostPort": 80,
-                    "protocol": "tcp"
-                }
-            ], 
-
-            "environment": [
-                {
-                    "name": "PORT",
-                    "value": "80"
-                },
-                {
-                    "name": "PRODUCT_CATALOG_SERVICE_ADDR",
-                    "value": "productcatalogservice:3550"
-                },
-                {
-                    "name": "CURRENCY_SERVICE_ADDR",
-                    "value": "currencyservice:7000"
-                },
-                {
-                    "name": "CART_SERVICE_ADDR",
-                    "value": "cartservice:7070"
-                },
-                {
-                    "name": "RECOMMENDATION_SERVICE_ADDR",
-                    "value": "recommendationservice:8080"
-                },
-                {
-                    "name": "SHIPPING_SERVICE_ADDR",
-                    "value": "shippingservice:50051"
-                },
-                {
-                    "name": "CHECKOUT_SERVICE_ADDR",
-                    "value": "checkoutservice:5050"
-                },
-                {
-                    "name": "SHOPPING_ASSISTANT_SERVICE_ADDR",
-                    "value": "shoppingassistantservice:8081"
-                },
-                {
-                    "name": "EMAIL_SERVICE_ADDR",
-                    "value": "emailservice:8080"
-                },
-                {
-                    "name": "AD_SERVICE_ADDR",
-                    "value": "adservice:9555"
-                },
-                {
-                    "name": "PAYMENT_SERVICE_ADDR",
-                    "value": "paymentservice:5000"
-                }
-            ], 
+            "portMappings": [{"containerPort": 80, "protocol": "tcp"}], 
+            "environmemt": [
+                {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8080"},
+                {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "shoppingassistantservice:8081"},
+                {"name": "CHECKOUT_SERVICE_ADDR", "value": "checkoutservice:5050"},
+                {"name": "SHIPPING_SERVICE_ADDR", "value": "hippingservice:50051"},
+                {"name": "RECOMMENDATION_SERVICE_ADDR", "value": "recommendationservice:8080"},
+                {"name": "CART_SERVICE_ADDR", "value": "cartservice:7070"},
+                {"name": "CURRENCY_SERVICE_ADDR", "value": "currencyservice:7000"},
+                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"},
+                {"name": "PAYMENT_SERVICE_ADDR", "value": "paymentservice:5000"}
+            ],
+            
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-group": "/ecs/watchTower-log-group",
                     "awslogs-region": "us-east-1",
-                    "awslogs-stream-prefix": "ecs"
+                    "awslogs-stream-prefix": "frontend"
+                }
+            }
+        },
+        {
+          "name": "emailservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:email-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 8080, "protocol": "tcp"}],  
+
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "email"
+                }
+            }
+        },
+         {
+          "name": "shoppingassistantservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shopping-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 8081, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "shopping"
+                }
+            }
+        },
+         {
+          "name": "checkoutservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:checkout-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 5050, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "checkout"
+                }
+            }
+        }, {
+          "name": "shippingservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shipping-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 50051, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "shipping"
+                }
+            }
+        }, 
+        {
+          "name": "recommendationservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:recommendation-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 8082, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "recommendation"
+                }
+            }
+        },
+        {
+          "name": "cartservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:cart-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 7070, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "cart"
+                }
+            }
+        },
+        {
+          "name": "currencyservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:currency-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 7000, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "currency"
+                }
+            }
+        },
+        {
+          "name": "productcatalogservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:product-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 3550, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "product"
+                }
+            }
+        },
+        {
+          "name": "paymentservice",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:payment-latest",
+            "essential": "true",
+            "memory": 512,
+            "cpu": 256,
+            "portMappings": [{"containerPort": 5000, "protocol": "tcp"}],
+            
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "payment"
                 }
             }
         }
