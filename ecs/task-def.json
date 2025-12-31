@@ -12,8 +12,6 @@
             "name": "frontend",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:frontend-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 80, "protocol": "tcp"}], 
             "environment": [
                 {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8080"},
@@ -40,8 +38,6 @@
           "name": "emailservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:email-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 8080, "protocol": "tcp"}],  
 
             "logConfiguration": {
@@ -57,8 +53,6 @@
           "name": "shoppingassistantservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shopping-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 8081, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -74,8 +68,6 @@
           "name": "checkoutservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:checkout-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 5050, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -90,8 +82,6 @@
           "name": "shippingservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shipping-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 50051, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -107,8 +97,6 @@
           "name": "recommendationservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:recommendation-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 8082, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -124,8 +112,6 @@
           "name": "cartservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:cart-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 7070, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -141,8 +127,6 @@
           "name": "currencyservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:currency-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 7000, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -158,8 +142,6 @@
           "name": "productcatalogservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:product-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 3550, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -175,8 +157,6 @@
           "name": "paymentservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:payment-latest",
             "essential": true,
-            "memory": 512,
-            "cpu": 256,
             "portMappings": [{"containerPort": 5000, "protocol": "tcp"}],
             
              "logConfiguration": {
