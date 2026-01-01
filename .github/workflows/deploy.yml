@@ -70,8 +70,8 @@ jobs:
                 docker build -f microservices-demo/src/emailservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:email-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:email-latest" microservices-demo/src/emailservice
                 docker build -f microservices-demo/src/paymentservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:payment-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:payment-latest" microservices-demo/src/paymentservice
                 docker build -f microservices-demo/src/productcatalogservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-latest" microservices-demo/src/productcatalogservice
-                docker build -f microservices-demo/src/recommendationservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-latest"microservices-demo/src/recommendationservice 
-                docker build -f microservices-demo/src/shippingservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-latest" Gmicroservices-demo/src/shippingservice
+                docker build -f microservices-demo/src/recommendationservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-latest" microservices-demo/src/recommendationservice 
+                docker build -f microservices-demo/src/shippingservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-latest" microservices-demo/src/shippingservice
                 docker build -f microservices-demo/src/shoppingassistantservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-latest" microservices-demo/src/shoppingassistantservice
         
                 echo Pushing docker image to ECR...
