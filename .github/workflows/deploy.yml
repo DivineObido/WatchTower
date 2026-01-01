@@ -63,16 +63,16 @@ jobs:
                 IMAGE_TAG=$(echo $IMAGE_TAG | xargs)
 
                 echo Building docker image...
-                docker build -f microservices-demo/src/frontend/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG" microservices-demo/src/frontend
-                docker build -f microservices-demo/src/cartservice/src/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:cart-$IMAGE_TAG" microservices-demo/src/cartservice/src 
-                docker build -f microservices-demo/src/checkoutservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:checkout-$IMAGE_TAG" microservices-demo/src/checkoutservice 
-                docker build -f microservices-demo/src/currencyservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:currency-$IMAGE_TAG" microservices-demo/src/currencyservice
-                docker build -f microservices-demo/src/emailservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:email-$IMAGE_TAG" microservices-demo/src/emailservice
-                docker build -f microservices-demo/src/paymentservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:payment-$IMAGE_TAG" microservices-demo/src/paymentservice
-                docker build -f microservices-demo/src/productcatalogservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-$IMAGE_TAG" microservices-demo/src/productcatalogservice
-                docker build -f microservices-demo/src/recommendationservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-$IMAGE_TAG" microservices-demo/src/recommendationservice 
-                docker build -f microservices-demo/src/shippingservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-$IMAGE_TAG" microservices-demo/src/shippingservice
-                docker build -f microservices-demo/src/shoppingassistantservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-$IMAGE_TAG" microservices-demo/src/shoppingassistantservice
+                docker build -f microservices-demo/src/frontend/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest"  microservices-demo/src/frontend
+                docker build -f microservices-demo/src/cartservice/src/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:cart-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:cart-latest" microservices-demo/src/cartservice/src 
+                docker build -f microservices-demo/src/checkoutservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:checkout-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:checkout-latest" microservices-demo/src/checkoutservice 
+                docker build -f microservices-demo/src/currencyservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:currency-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:currency-latest" microservices-demo/src/currencyservice
+                docker build -f microservices-demo/src/emailservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:email-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:email-latest" microservices-demo/src/emailservice
+                docker build -f microservices-demo/src/paymentservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:payment-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:payment-latest" microservices-demo/src/paymentservice
+                docker build -f microservices-demo/src/productcatalogservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-latest" microservices-demo/src/productcatalogservice
+                docker build -f microservices-demo/src/recommendationservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-latest"microservices-demo/src/recommendationservice 
+                docker build -f microservices-demo/src/shippingservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-latest" Gmicroservices-demo/src/shippingservice
+                docker build -f microservices-demo/src/shoppingassistantservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-$IMAGE_TAG" -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-latest" microservices-demo/src/shoppingassistantservice
         
                 echo Pushing docker image to ECR...
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-$IMAGE_TAG"
