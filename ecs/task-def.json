@@ -52,7 +52,7 @@
          {
           "name": "shoppingassistantservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shopping-latest",
-            "essential": true,
+            "essential": false,
             "portMappings": [{"containerPort": 8081, "protocol": "tcp"}],
             
              "logConfiguration": {
@@ -98,7 +98,9 @@
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:recommendation-latest",
             "essential": true,
             "portMappings": [{"containerPort": 8082, "protocol": "tcp"}],
-            
+            "environment" : [
+                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"}
+            ],
              "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
