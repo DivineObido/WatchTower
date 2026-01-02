@@ -40,6 +40,7 @@ resource "aws_security_group" "alb_sg" {
 
 }
 
+
 resource "aws_alb_target_group" "watchtower_tg" {
   name = "watchtower-tg"
   port = 8080
