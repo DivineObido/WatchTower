@@ -66,7 +66,7 @@
                 }
             }
         },
-         {
+        {
           "name": "checkoutservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:checkout-latest",
             "essential": true,
@@ -86,20 +86,6 @@
                     "awslogs-group": "/ecs/watchTower-log-group",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "checkout"
-                }
-            }
-        }, {
-          "name": "shippingservice",
-            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:shipping-latest",
-            "essential": true,
-            "portMappings": [{"containerPort": 50051, "protocol": "tcp"}],
-            "environment": [{"name": "DISABLE_PROFILER", "value": "1"}],
-             "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "/ecs/watchTower-log-group",
-                    "awslogs-region": "us-east-1",
-                    "awslogs-stream-prefix": "shipping"
                 }
             }
         }, 
