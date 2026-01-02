@@ -42,13 +42,14 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_alb_target_group" "watchtower_tg" {
   name = "watchtower-tg"
-  port = 80
+  port = 8080
   protocol = "HTTP"
   vpc_id = aws_vpc.watchtower.id
   target_type =  "ip"
 
   health_check {
     path = "/"
+    port = "8080"
   }
 }
 
