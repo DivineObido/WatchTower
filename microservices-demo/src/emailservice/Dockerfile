@@ -47,5 +47,5 @@ COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
 # Add the application
 COPY . .
 
-EXPOSE 8082
+EXPOSE 8081
 ENTRYPOINT [ "python", "email_server.py" ]
