@@ -14,18 +14,18 @@
             "essential": true,
             "portMappings": [{"containerPort": 8080, "protocol": "tcp"}], 
             "environment": [
-                {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8081"},
-                {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "shoppingassistantservice:8082"},
-                {"name": "CHECKOUT_SERVICE_ADDR", "value": "checkoutservice:5050"},
-                {"name": "SHIPPING_SERVICE_ADDR", "value": "shippingservice:50051"},
-                {"name": "RECOMMENDATION_SERVICE_ADDR", "value": "recommendationservice:8083"},
-                {"name": "CART_SERVICE_ADDR", "value": "cartservice:7070"},
-                {"name": "CURRENCY_SERVICE_ADDR", "value": "currencyservice:7000"},
-                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"},
-                {"name": "PAYMENT_SERVICE_ADDR", "value": "paymentservice:5000"},
-                {"name": "AD_SERVICE_ADDR", "value": "adservice:9555"},
+                {"name": "EMAIL_SERVICE_ADDR", "value": "localhost:8081"},
+                {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "localhost:8082"},
+                {"name": "CHECKOUT_SERVICE_ADDR", "value": "localhost:5050"},
+                {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},
+                {"name": "RECOMMENDATION_SERVICE_ADDR", "value": "localhost:8083"},
+                {"name": "CART_SERVICE_ADDR", "value": "localhost:7070"},
+                {"name": "CURRENCY_SERVICE_ADDR", "value": "localhost:7000"},
+                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "localhost:3550"},
+                {"name": "PAYMENT_SERVICE_ADDR", "value": "localhost:5000"},
+                {"name": "AD_SERVICE_ADDR", "value": "localhost:9555"},
                 {"name": "DISABLE_PROFILER", "value": "1"}
-            ],
+            ], 
             
             "logConfiguration": {
                 "logDriver": "awslogs",
@@ -57,12 +57,12 @@
             "essential": true,
             "portMappings": [{"containerPort": 5050, "protocol": "tcp"}],
             "environment": [
-                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"},
-                {"name": "SHIPPING_SERVICE_ADDR", "value": "shippingservice:50051"},
-                {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8081"},
-                {"name": "PAYMENT_SERVICE_ADDR", "value": "paymentservice:5000"},
-                {"name": "CURRENCY_SERVICE_ADDR", "value": "currencyservice:7000"},
-                {"name": "CART_SERVICE_ADDR", "value": "cartservice:7070"},
+                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "localhost:3550"},
+                {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},
+                {"name": "EMAIL_SERVICE_ADDR", "value": "localhost:8081"},
+                {"name": "PAYMENT_SERVICE_ADDR", "value": "localhost:5000"},
+                {"name": "CURRENCY_SERVICE_ADDR", "value": "localhost:7000"},
+                {"name": "CART_SERVICE_ADDR", "value": "localhost:7070"},
                 {"name": "DISABLE_PROFILER", "value": "1"}
             ],
              "logConfiguration": {
@@ -95,7 +95,7 @@
             "essential": true,
             "portMappings": [{"containerPort": 8083, "protocol": "tcp"}],
             "environment" : [
-                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"},
+                {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "localhost:3550"},
                 {"name": "DISABLE_PROFILER", "value": "1"}
             ],
              "logConfiguration": {
