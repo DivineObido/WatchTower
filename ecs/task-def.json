@@ -40,7 +40,7 @@
           "name": "emailservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:email-latest",
             "essential": true,
-            "portMappings": [{"containerPort": 8082, "protocol": "tcp"}],  
+            "portMappings": [{"containerPort": 8081, "protocol": "tcp"}],  
             "environment": [{"name": "DISABLE_PROFILER", "value": "1"}],
             "logConfiguration": {
                 "logDriver": "awslogs",
@@ -59,7 +59,7 @@
             "environment": [
                 {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "productcatalogservice:3550"},
                 {"name": "SHIPPING_SERVICE_ADDR", "value": "shippingservice:50051"},
-                {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8080"},
+                {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8081"},
                 {"name": "PAYMENT_SERVICE_ADDR", "value": "paymentservice:5000"},
                 {"name": "CURRENCY_SERVICE_ADDR", "value": "currencyservice:7000"},
                 {"name": "CART_SERVICE_ADDR", "value": "cartservice:7070"},
