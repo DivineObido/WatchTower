@@ -176,6 +176,6 @@ resource "aws_ecs_service" "watchTower_service" {
   load_balancer {
     target_group_arn = aws_alb_target_group.watchtower_tg.arn
     container_name = "frontend"
-    container_port = 80
+    container_port = 8080
   }
 }
