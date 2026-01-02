@@ -48,7 +48,12 @@ resource "aws_alb_target_group" "watchtower_tg" {
   target_type =  "ip"
 
   health_check {
-    path = "/"
+    path = "/health"
+    protocol = "HTTP"
+    interval = 30
+    timeout = 5
+    healthy_threshold = 2
+    unhealthy_threshold = 3
     port = "8080"
   }
 }
