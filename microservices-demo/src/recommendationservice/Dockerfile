@@ -46,7 +46,7 @@ COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
 COPY . .
 
 # set listen port
-ENV PORT="8082"
-EXPOSE 8082
+ENV PORT="8083"
+EXPOSE 8083
 
 ENTRYPOINT ["python", "recommendation_server.py"]
