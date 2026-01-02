@@ -12,7 +12,7 @@
             "name": "frontend",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:frontend-latest",
             "essential": true,
-            "portMappings": [{"containerPort": 8080, "protocol": "tcp"}], 
+            "portMappings": [{"containerPort": 80, "protocol": "tcp"}], 
             "environment": [
                 {"name": "EMAIL_SERVICE_ADDR", "value": "emailservice:8081"},
                 {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "shoppingassistantservice:8082"},
