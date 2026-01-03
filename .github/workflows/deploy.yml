@@ -96,10 +96,10 @@ jobs:
               id: register-task
               run: |
                 echo "Registering new version of task definition"
-                TASK_DEF_ARN=${aws ecs register-task-definition \
+                TASK_DEF_ARN=$(aws ecs register-task-definition \
                 --cli-input-json file://ecs/task-def.json \
                 --query 'taskDefinition.taskDefinitionArn' \
-                --output text}
+                --output text)
                 echo "task-def-arn=$TASK_DEF_ARN" >> $GITHUB_OUTPUT
                 echo "$TASK_DEF_ARN registered"
 
@@ -107,10 +107,10 @@ jobs:
               id: register-grafana-task
               run: |
                 echo "Registering new version of grafana task definition"
-                TASK_DEF_GRAFANA_ARN=${aws ecs register-task-definition \
+                TASK_DEF_GRAFANA_ARN=$(aws ecs register-task-definition \
                 --cli-input-json file://grafana/ecs/task-def.json \
                 --query 'taskDefinition.taskDefinitionArn' \
-                --output text}
+                --output text)
                 echo "task-def-grafana-arn=$TASK_DEF_GRAFANA_ARN" >> $GITHUB_OUTPUT
                 echo "$TASK_DEF_GRAFANA_ARN registered"
 
