@@ -133,7 +133,7 @@ jobs:
                 force-new-deployment: true
                 wait-for-service-stability: true
 
-            - name: Deploy task definition to ECS 
+            - name: Deploy grafana task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
                 task-definition: ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}

@@ -68,9 +68,13 @@ resource "aws_alb_target_group" "grafana_tg" {
   target_type = "ip"
 
   health_check {
-    protocol = "HTTP"
+    protocol= "HTTP"
+    port = "traffic-port"
     path = "/"
-    port = "3000"
+    interval = 30
+    timeout = 5
+    healthy_threshold = 2
+    unhealthy_threshold = 3
   }
 }
 
