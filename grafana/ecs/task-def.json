@@ -1,0 +1,30 @@
+{
+    "family": "grafana-task",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::288761756960:role/ecsExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "grafana",
+            "image": "grafana/grafana:latest",
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/grafana-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "grafana"
+                }
+            }
+        }
+    ]
+}

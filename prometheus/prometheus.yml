@@ -1,0 +1,91 @@
+global:
+  scrape_interval: "30s" 
+  evaluation_interval: "30s"
+  external_labels:
+    cluster: 'watchTower-ecs-cluster'
+    environment: 'production'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+  
+  - job_name: 'frontend'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8080']
+        labels:
+          service: 'frontend'
+          tier: 'web'
+
+  - job_name: 'emailservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8081']
+        labels:
+          service: 'emailservice'
+          tier: 'backend'
+
+  - job_name: 'checkoutservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:5050']
+        labels:
+          service: 'checkoutservice'
+          tier: 'backend'
+
+  - job_name: 'shippingservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:50051']
+        labels:
+          service: 'emailservice'
+          tier: 'backend'  
+
+  - job_name: 'recommendationservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:8083']
+        labels:
+          service: 'recommendationservice'
+          tier: 'backend' 
+
+  - job_name: 'cartservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:7070']
+        labels:
+          service: 'emailservice'
+          tier: 'backend'
+
+  - job_name: 'currencyservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:7000']
+        labels:
+          service: 'currencyservice'
+          tier: 'backend'
+
+  - job_name: 'productcatalogservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:3550']
+        labels:
+          service: 'productcatalogservice'
+          tier: 'backend'
+
+  - job_name: 'paymentservice'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['localhost:5000']
+        labels:
+          service: 'productcatalogservice'
+          tier: 'backend'
+
+  
+
+  
+
+
+
+  

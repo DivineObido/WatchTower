@@ -40,7 +40,7 @@ resource "aws_security_group" "alb_sg" {
 
 }
 
-
+# Application target Group
 resource "aws_alb_target_group" "watchtower_tg" {
   name = "watchtower-tg"
   port = 8080
@@ -56,6 +56,21 @@ resource "aws_alb_target_group" "watchtower_tg" {
     healthy_threshold = 2
     unhealthy_threshold = 3
     port = "8080"
+  }
+}
+
+# Grafana target Group
+resource "aws_alb_target_group" "grafana_tg" {
+  name = "grafana-tg"
+  port = 3000
+  protocol = "HTTP"
+  vpc_id = aws_vpc.watchtower.id
+  target_type = "ip"
+
+  health_check {
+    protocol = "HTTP"
+    path = "/"
+    port = "3000"
   }
 }
 
@@ -82,6 +97,20 @@ resource "aws_alb_listener" "http_listener" {
       port = 443
       protocol = "HTTPS"
       status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_alb_listener_rule" "grafana_http_listener" {
+  listener_arn = aws_alb_listener.http_listener.arn
+  priority = 10
+  action {
+    type = "forward"
+    target_group_arn = aws_alb_target_group.grafana_tg.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/grafana/*"]
     }
   }
 }

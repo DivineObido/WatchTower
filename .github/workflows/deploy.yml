@@ -29,6 +29,8 @@ jobs:
             ECS_SERVICE: ${{ vars.ECS_SERVICE }}
             ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
             CONTAINER_NAME: ${{ vars.CONTAINER_NAME }}
+            GRAFANA_ECS_SERVICE: ${{ vars.GRAFANA_ECS_SERVICE }}
+            GRAFANA_CONTAINER: ${{ vars.GRAFANA_CONTAINER   }}
         steps:
             - name: Checkout_repository
               uses: actions/checkout@v4
@@ -62,7 +64,7 @@ jobs:
                 ECR_REPOSITORY=$(echo $ECR_REPOSITORY | xargs)
                 # IMAGE_TAG=$(echo $IMAGE_TAG | xargs)
 
-                echo Building docker image...
+                echo Building microservices images...
                 docker build -f microservices-demo/src/frontend/Dockerfile  -t "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest"  microservices-demo/src/frontend
                 docker build -f microservices-demo/src/cartservice/src/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:cart-latest" microservices-demo/src/cartservice/src 
                 docker build -f microservices-demo/src/checkoutservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:checkout-latest" microservices-demo/src/checkoutservice 
@@ -72,9 +74,11 @@ jobs:
                 docker build -f microservices-demo/src/productcatalogservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:product-latest" microservices-demo/src/productcatalogservice
                 docker build -f microservices-demo/src/recommendationservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-latest" microservices-demo/src/recommendationservice 
                 docker build -f microservices-demo/src/shippingservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-latest" microservices-demo/src/shippingservice
-                docker build -f microservices-demo/src/shoppingassistantservice/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-latest" microservices-demo/src/shoppingassistantservice
+                
+                echo Building prometheus image...
+                docker build -f prometheus/Dockerfile.prod -t "$ECR_REGISTRY/$ECR_REPOSITORY:prometheus-latest" prometheus
         
-                echo Pushing docker image to ECR...
+                echo Pushing docker all images to ECR...
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest"
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:cart-latest"
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:checkout-latest"
@@ -84,35 +88,58 @@ jobs:
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:product-latest"
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:recommendation-latest"
                 docker push "$ECR_REGISTRY/$ECR_REPOSITORY:shipping-latest"
-                docker push "$ECR_REGISTRY/$ECR_REPOSITORY:shopping-latest"
+                docker push "$ECR_REGISTRY/$ECR_REPOSITORY:prometheus-latest"
 
-                echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest" >> $GITHUB_OUTPUT
+                echo "All images successfully pushed"
 
-            - name: Debug outputs
+            - name: Register microservices task definition
+              id: register-task
               run: |
-                echo "Container name: ${{ env.CONTAINER_NAME }}"
-                echo "Built image: ${{ steps.build-image.outputs.image }}"
-                echo "Task definition path: ecs/task-def.json"
+                echo "Registering new version of task definition"
+                TASK_DEF_ARN=${aws ecs register-task-definition \
+                --cli-input-json file://ecs/task-def.json \
+                --query 'taskDefinition.taskDefinitionArn' \
+                --output text}
+                echo "task-def-arn=$TASK_DEF_ARN" >> $GITHUB_OUTPUT
+                echo "$TASK_DEF_ARN registered"
 
-            - name: Add image to ECS task definition
-              id: task-def
-              uses: aws-actions/amazon-ecs-render-task-definition@v1
-              with:
-                task-definition: ecs/task-def.json
-                container-name: ${{ env.CONTAINER_NAME}}
-                image: ${{ steps.build-image.outputs.image}}
-            
+            - name: Register grafana task definition
+              id: register-grafana-task
+              run: |
+                echo "Registering new version of grafana task definition"
+                TASK_DEF_GRAFANA_ARN=${aws ecs register-task-definition \
+                --cli-input-json file://grafana/ecs/task-def.json \
+                --query 'taskDefinition.taskDefinitionArn' \
+                --output text}
+                echo "task-def-grafana-arn=$TASK_DEF_GRAFANA_ARN" >> $GITHUB_OUTPUT
+                echo "$TASK_DEF_GRAFANA_ARN registered"
+
             - name: Debug rendered task definition
               run: |
                 echo "Rendered task definition:"
-                cat ${{ steps.task-def.outputs.task-definition }}
+                cat ${{ steps.register-task.outputs.task-def-arn }}
+
+            - name: Debug rendered grafana task definition
+              run: |
+                echo "Rendered grafana task definition:"
+                cat ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
 
             - name: Deploy task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
-                task-definition: ${{ steps.task-def.outputs.task-definition }}
+                task-definition: ${{ steps.register-task.outputs.task-def-arn }}
                 service: ${{ env.ECS_SERVICE }}
                 cluster: ${{ env.ECS_CLUSTER }}
+                force-new-deployment: true
+                wait-for-service-stability: true
+
+            - name: Deploy task definition to ECS 
+              uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+              with:
+                task-definition: ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
+                service: ${{ env.GRAFANA_ECS_SERVICE }}
+                cluster: ${{ env.ECS_CLUSTER }}
+                force-new-deployment: true
                 wait-for-service-stability: true
 
 

@@ -35,6 +35,14 @@ resource "aws_security_group" "ecs_sg" {
     description = "Allow HTTP inbound traffic from alb listening on port 8080"
   }
 
+  ingress {
+    from_port = 9090
+    to_port = 9090
+    protocol = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+    description = "Allow HTTP inbound traffic from alb listening on port 9090"
+  }
+
   egress {
     from_port = 0
     to_port = 0

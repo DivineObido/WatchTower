@@ -15,7 +15,6 @@
             "portMappings": [{"containerPort": 8080, "protocol": "tcp"}], 
             "environment": [
                 {"name": "EMAIL_SERVICE_ADDR", "value": "localhost:8081"},
-                {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "localhost:8082"},
                 {"name": "CHECKOUT_SERVICE_ADDR", "value": "localhost:5050"},
                 {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},
                 {"name": "RECOMMENDATION_SERVICE_ADDR", "value": "localhost:8083"},
@@ -170,6 +169,21 @@
                     "awslogs-group": "/ecs/watchTower-log-group",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "payment"
+                }
+            }
+        },
+        {
+          "name": "prometheus",
+            "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:prometheus-latest",
+            "essential": false,
+            "portMappings": [{"containerPort": 9090, "protocol": "tcp"}],
+            "environment":[],
+             "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/watchTower-log-group",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "prometheus"
                 }
             }
         }
