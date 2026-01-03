@@ -96,38 +96,29 @@ jobs:
               id: register-task
               run: |
                 echo "Registering new version of task definition"
-                TASK_DEF_ARN=$(aws ecs register-task-definition \
+                aws ecs register-task-definition \
                 --cli-input-json file://ecs/task-def.json \
-                --query 'taskDefinition.taskDefinitionArn' \
-                --output text)
-                echo "task-def-arn=$TASK_DEF_ARN" >> $GITHUB_OUTPUT
-                echo "$TASK_DEF_ARN registered"
+                --query 'taskDefinition' \
+                > task-def-registered.json
+                echo "Microservices task definition registered"
+                
 
             - name: Register grafana task definition
               id: register-grafana-task
               run: |
                 echo "Registering new version of grafana task definition"
-                TASK_DEF_GRAFANA_ARN=$(aws ecs register-task-definition \
+                
+                aws ecs register-task-definition \
                 --cli-input-json file://grafana/ecs/task-def.json \
-                --query 'taskDefinition.taskDefinitionArn' \
-                --output text)
-                echo "task-def-grafana-arn=$TASK_DEF_GRAFANA_ARN" >> $GITHUB_OUTPUT
-                echo "$TASK_DEF_GRAFANA_ARN registered"
-
-            - name: Debug rendered task definition
-              run: |
-                echo "Rendered task definition:"
-                echo ${{ steps.register-task.outputs.task-def-arn }}
-
-            - name: Debug rendered grafana task definition
-              run: |
-                echo "Rendered grafana task definition:"
-                echo ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
+                --query 'taskDefinition' \
+                > grafana-task-def-registered.json
+                echo "Grafana task definition registered"
+               
 
             - name: Deploy task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
-                task-definition: "${{ steps.register-task.outputs.task-def-arn }}"
+                task-definition: task-def-registered.json
                 service: ${{ env.ECS_SERVICE }}
                 cluster: ${{ env.ECS_CLUSTER }}
                 force-new-deployment: true
@@ -136,7 +127,7 @@ jobs:
             - name: Deploy grafana task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
-                task-definition: "${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}"
+                task-definition: grafana-task-def-registered.json
                 service: ${{ env.GRAFANA_ECS_SERVICE }}
                 cluster: ${{ env.ECS_CLUSTER }}
                 force-new-deployment: true
