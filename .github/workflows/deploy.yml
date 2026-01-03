@@ -117,12 +117,12 @@ jobs:
             - name: Debug rendered task definition
               run: |
                 echo "Rendered task definition:"
-                cat ${{ steps.register-task.outputs.task-def-arn }}
+                echo ${{ steps.register-task.outputs.task-def-arn }}
 
             - name: Debug rendered grafana task definition
               run: |
                 echo "Rendered grafana task definition:"
-                cat ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
+                echo ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
 
             - name: Deploy task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
