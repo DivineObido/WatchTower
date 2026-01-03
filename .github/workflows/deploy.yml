@@ -127,7 +127,7 @@ jobs:
             - name: Deploy task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
-                task-definition: ${{ steps.register-task.outputs.task-def-arn }}
+                task-definition: "${{ steps.register-task.outputs.task-def-arn }}"
                 service: ${{ env.ECS_SERVICE }}
                 cluster: ${{ env.ECS_CLUSTER }}
                 force-new-deployment: true
@@ -136,7 +136,7 @@ jobs:
             - name: Deploy grafana task definition to ECS 
               uses: aws-actions/amazon-ecs-deploy-task-definition@v2
               with:
-                task-definition: ${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}
+                task-definition: "${{ steps.register-grafana-task.outputs.task-def-grafana-arn }}"
                 service: ${{ env.GRAFANA_ECS_SERVICE }}
                 cluster: ${{ env.ECS_CLUSTER }}
                 force-new-deployment: true
