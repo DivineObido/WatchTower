@@ -15,6 +15,7 @@
             "portMappings": [{"containerPort": 8080, "protocol": "tcp"}], 
             "environment": [
                 {"name": "EMAIL_SERVICE_ADDR", "value": "localhost:8081"},
+                {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "localhost:8082"},
                 {"name": "CHECKOUT_SERVICE_ADDR", "value": "localhost:5050"},
                 {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},
                 {"name": "RECOMMENDATION_SERVICE_ADDR", "value": "localhost:8083"},

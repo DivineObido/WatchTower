@@ -42,7 +42,7 @@ data "aws_ecs_task_definition" "grafana_task_def" {
 #         ],
 #     }
 #   ])
-# }
+#}
 
 resource "aws_ecs_service" "grafana_service" {
   name = "grafana-ecs-service"
