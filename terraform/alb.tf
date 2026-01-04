@@ -66,6 +66,7 @@ resource "aws_alb_target_group" "grafana_tg" {
   protocol = "HTTP"
   vpc_id = aws_vpc.watchtower.id
   target_type = "ip"
+  deregistration_delay = 30
 
   health_check {
     protocol= "HTTP"
@@ -74,8 +75,8 @@ resource "aws_alb_target_group" "grafana_tg" {
     interval = 30
     timeout = 5
     healthy_threshold = 2
-    unhealthy_threshold = 3
-    matcher = 200
+    unhealthy_threshold = 6
+    matcher = "200,302"
   }
 }
 
