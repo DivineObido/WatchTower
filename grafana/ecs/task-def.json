@@ -13,9 +13,17 @@
             "portMappings": [
                 {
                     "containerPort": 3000,
+                    "hostPort": 3000,
                     "protocol": "tcp"
                 }
             ],
+            "environment": [
+                {
+                    "name": "GF_SERVER_HTTP_ADDR",
+                    "value": "0.0.0.0"
+                }
+            ],
+            
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {

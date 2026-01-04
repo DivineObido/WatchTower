@@ -75,6 +75,7 @@ resource "aws_alb_target_group" "grafana_tg" {
     timeout = 5
     healthy_threshold = 2
     unhealthy_threshold = 3
+    matcher = 200
   }
 }
 
