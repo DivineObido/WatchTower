@@ -70,7 +70,7 @@ resource "aws_alb_target_group" "grafana_tg" {
   health_check {
     protocol= "HTTP"
     port = "traffic-port"
-    path = "/"
+    path = "/api/health"
     interval = 30
     timeout = 5
     healthy_threshold = 2
