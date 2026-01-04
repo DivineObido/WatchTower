@@ -108,7 +108,7 @@ resource "aws_alb_listener" "http_listener" {
 }
 
 resource "aws_alb_listener_rule" "grafana_http_listener" {
-  listener_arn = aws_alb_listener.http_listener.arn
+  listener_arn = aws_alb_listener.https_listener.arn
   priority = 10
   action {
     type = "forward"
@@ -116,7 +116,7 @@ resource "aws_alb_listener_rule" "grafana_http_listener" {
   }
   condition {
     path_pattern {
-      values = ["/grafana/*"]
+      values = ["/grafana/*", "/grafana"]
     }
   }
 }
