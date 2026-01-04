@@ -18,12 +18,12 @@
                 }
             ],
             "environment": [
-                {
-                    "name": "GF_SERVER_HTTP_ADDR",
-                    "value": "0.0.0.0"
-                }
+                { "name": "GF_LOG_MODE", "value": "console" },
+                { "name": "GF_SECURITY_ADMIN_USER", "value": "admin" },
+                { "name": "GF_SECURITY_ADMIN_PASSWORD", "value": "admin" },
+                { "name": "GF_SERVER_HTTP_ADDR", "value": "0.0.0.0" }
             ],
-            
+
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
