@@ -23,6 +23,13 @@
                 { "name": "GF_SECURITY_ADMIN_PASSWORD", "value": "admin" },
                 { "name": "GF_SERVER_HTTP_ADDR", "value": "0.0.0.0" }
             ],
+            "healthCheck": {
+                "command": ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 90
+            },
 
             "logConfiguration": {
                 "logDriver": "awslogs",
