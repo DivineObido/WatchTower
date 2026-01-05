@@ -177,7 +177,7 @@ resource "aws_ecs_service" "watchTower_service" {
 
   network_configuration {
     subnets = [for subnet in aws_subnet.watchtower_subnet : subnet.id]
-    assign_public_ip = false
+    assign_public_ip = true
     security_groups = [aws_security_group.ecs_sg.id]
   }
 
