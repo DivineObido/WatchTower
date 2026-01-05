@@ -13,7 +13,7 @@ scrape_configs:
   - job_name: 'frontend'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:8080']
+      - targets: ['frontend:8080']
         labels:
           service: 'frontend'
           tier: 'web'
@@ -21,7 +21,7 @@ scrape_configs:
   - job_name: 'emailservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:8081']
+      - targets: ['email:8081']
         labels:
           service: 'emailservice'
           tier: 'backend'
@@ -29,7 +29,7 @@ scrape_configs:
   - job_name: 'checkoutservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:5050']
+      - targets: ['checkout:5050']
         labels:
           service: 'checkoutservice'
           tier: 'backend'
@@ -37,7 +37,7 @@ scrape_configs:
   - job_name: 'shippingservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:50051']
+      - targets: ['shipping:50051']
         labels:
           service: 'emailservice'
           tier: 'backend'  
@@ -45,7 +45,7 @@ scrape_configs:
   - job_name: 'recommendationservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:8083']
+      - targets: ['recommendation:8083']
         labels:
           service: 'recommendationservice'
           tier: 'backend' 
@@ -53,7 +53,7 @@ scrape_configs:
   - job_name: 'cartservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:7070']
+      - targets: ['cart:7070']
         labels:
           service: 'emailservice'
           tier: 'backend'
@@ -61,7 +61,7 @@ scrape_configs:
   - job_name: 'currencyservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:7000']
+      - targets: ['currency:7000']
         labels:
           service: 'currencyservice'
           tier: 'backend'
@@ -69,7 +69,7 @@ scrape_configs:
   - job_name: 'productcatalogservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:3550']
+      - targets: ['product:3550']
         labels:
           service: 'productcatalogservice'
           tier: 'backend'
@@ -77,7 +77,7 @@ scrape_configs:
   - job_name: 'paymentservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:5000']
+      - targets: ['payment:5000']
         labels:
           service: 'productcatalogservice'
           tier: 'backend'
