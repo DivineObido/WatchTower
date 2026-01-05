@@ -39,7 +39,7 @@ resource "aws_security_group" "ecs_sg" {
     from_port = 9090
     to_port = 9090
     protocol = "tcp"
-    security_groups = [aws_security_group.alb_sg.id]
+    security_groups = [aws_security_group.grafana_sg.id]
     description = "Allow HTTP inbound traffic from alb listening on port 9090"
   }
 
@@ -177,7 +177,7 @@ resource "aws_ecs_service" "watchTower_service" {
 
   network_configuration {
     subnets = [for subnet in aws_subnet.watchtower_subnet : subnet.id]
-    assign_public_ip = true
+    assign_public_ip = false
     security_groups = [aws_security_group.ecs_sg.id]
   }
 
@@ -185,5 +185,28 @@ resource "aws_ecs_service" "watchTower_service" {
     target_group_arn = aws_alb_target_group.watchtower_tg.arn
     container_name = "frontend"
     container_port = 8080
+  }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.prometheus_sd.arn
+  }
+}
+
+# to store service discovery name
+resource "aws_service_discovery_private_dns_namespace" "watchtower_ns" {
+  name = "watchtower.local"
+  vpc = aws_vpc.watchtower.id
+  description = "private DNS for all task in ECS service"
+}
+
+resource "aws_service_discovery_service" "prometheus_sd" {
+  name = "prometheus"
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.watchtower_ns.id
+    routing_policy = "MULTIVALUE"
+    dns_records {
+      ttl = 10
+      type = "A"
+    }
   }
 }
