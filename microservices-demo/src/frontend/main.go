@@ -11,6 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+go get github.com/prometheus/client_golang/prometheus
+go get github.com/prometheus/client_golang/prometheus/promhttp
+
 
 package main
 
@@ -33,6 +36,7 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -57,6 +61,27 @@ var (
 
 	baseUrl = ""
 )
+
+// Prometheus metrics
+var (
+    httpRequestsTotal = prometheus.NewCounterVec(
+        prometheus.CounterOpts{
+            Name: "frontend_http_requests_total",
+            Help: "Total number of HTTP requests",
+        },
+        []string{"path", "method"},
+    )
+
+    httpRequestDuration = prometheus.NewHistogramVec(
+        prometheus.HistogramOpts{
+            Name:    "frontend_http_request_duration_seconds",
+            Help:    "Duration of HTTP requests",
+            Buckets: prometheus.DefBuckets,
+        },
+        []string{"path", "method"},
+    )
+)
+
 
 type ctxKeySessionID struct{}
 
@@ -86,6 +111,18 @@ type frontendServer struct {
 	collectorConn *grpc.ClientConn
 
 	shoppingAssistantSvcAddr string
+}
+
+func prometheusMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        start := time.Now()
+        next.ServeHTTP(w, r)
+        duration := time.Since(start).Seconds()
+        path := r.URL.Path
+        method := r.Method
+        httpRequestsTotal.WithLabelValues(path, method).Inc()
+        httpRequestDuration.WithLabelValues(path, method).Observe(duration)
+    })
 }
 
 func main() {
@@ -159,11 +196,15 @@ func main() {
 	r.PathPrefix(baseUrl + "/static/").Handler(http.StripPrefix(baseUrl+"/static/", http.FileServer(http.Dir("./static/"))))
 	r.HandleFunc(baseUrl+"/robots.txt", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "User-agent: *\nDisallow: /") })
 	r.HandleFunc(baseUrl+"/_healthz", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") })
-	r.HandleFunc(baseUrl+"/health", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") }) // << added for ALB health check
+	r.HandleFunc(baseUrl+"/health", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") }) // added for ALB health check
 	r.HandleFunc(baseUrl+"/product-meta/{ids}", svc.getProductByID).Methods(http.MethodGet)
 	r.HandleFunc(baseUrl+"/bot", svc.chatBotHandler).Methods(http.MethodPost)
-
-	var handler http.Handler = r
+	r.Handle("/metrics", promhttp.Handler())
+	// Register Prometheus metrics
+	prometheus.MustRegister(httpRequestsTotal)
+	prometheus.MustRegister(httpRequestDuration)
+	
+	var handler http.Handler = prometheusMiddleware(r)
 	handler = &logHandler{log: log, next: handler}     // add logging
 	handler = ensureSessionID(handler)                 // add session ID
 	handler = otelhttp.NewHandler(handler, "frontend") // add OTel tracing
