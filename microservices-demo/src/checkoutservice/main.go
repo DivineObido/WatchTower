@@ -20,6 +20,7 @@ import (
 	"net"
 	"os"
 	"time"
+	"net/http"
 
 	"cloud.google.com/go/profiler"
 	"github.com/google/uuid"
@@ -40,6 +41,8 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"github.com/prometheus/client_golang/prometheus"
+    "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -48,6 +51,31 @@ const (
 )
 
 var log *logrus.Logger
+
+var (
+    checkoutRequests = prometheus.NewCounter(
+        prometheus.CounterOpts{
+            Name: "checkout_requests_total",
+            Help: "Total number of checkout requests",
+        },
+    )
+
+    checkoutErrors = prometheus.NewCounter(
+        prometheus.CounterOpts{
+            Name: "checkout_errors_total",
+            Help: "Total number of failed checkout requests",
+        },
+    )
+
+    checkoutDuration = prometheus.NewHistogram(
+        prometheus.HistogramOpts{
+            Name: "checkout_duration_seconds",
+            Help: "Time taken to process a checkout",
+            Buckets: prometheus.DefBuckets,
+        },
+    )
+)
+
 
 func init() {
 	log = logrus.New()
@@ -129,6 +157,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+
 	var srv *grpc.Server
 
 	// Propagate trace context always
@@ -143,6 +172,20 @@ func main() {
 	healthcheck := health.NewServer()
 	healthpb.RegisterHealthServer(srv, healthcheck)
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
+	// Register Prometheus metrics
+	prometheus.MustRegister(checkoutRequests)
+	prometheus.MustRegister(checkoutErrors)
+	prometheus.MustRegister(checkoutDuration)
+
+	// Expose /metrics endpoint
+	go func() {
+		http.Handle("/metrics", promhttp.Handler())
+		log.Info("Prometheus metrics available on :5050/metrics")
+		if err := http.ListenAndServe(":5050", nil); err != nil {
+			log.Fatalf("Failed to start metrics server: %v", err)
+		}
+	}()
+
 	err = srv.Serve(lis)
 	log.Fatal(err)
 }
@@ -228,6 +271,8 @@ func (cs *checkoutService) Watch(req *healthpb.HealthCheckRequest, ws healthpb.H
 }
 
 func (cs *checkoutService) PlaceOrder(ctx context.Context, req *pb.PlaceOrderRequest) (*pb.PlaceOrderResponse, error) {
+	checkoutRequests.Inc()
+	start := time.Now()
 	log.Infof("[PlaceOrder] user_id=%q user_currency=%q", req.UserId, req.UserCurrency)
 
 	orderID, err := uuid.NewUUID()
@@ -276,6 +321,7 @@ func (cs *checkoutService) PlaceOrder(ctx context.Context, req *pb.PlaceOrderReq
 		log.Infof("order confirmation email sent to %q", req.Email)
 	}
 	resp := &pb.PlaceOrderResponse{Order: orderResult}
+	checkoutDuration.Observe(time.Since(start).Seconds())
 	return resp, nil
 }
 
