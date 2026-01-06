@@ -41,6 +41,7 @@ import (
 
 const (
 	port            = "8080"
+	metricsPort = "9093"
 	defaultCurrency = "USD"
 	cookieMaxAge    = 60 * 60 * 48
 
@@ -64,22 +65,22 @@ var (
 
 // Prometheus metrics
 var (
-    httpRequestsTotal = prometheus.NewCounterVec(
-        prometheus.CounterOpts{
-            Name: "frontend_http_requests_total",
-            Help: "Total number of HTTP requests",
-        },
-        []string{"path", "method"},
-    )
+	httpRequestsTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "frontend_http_requests_total",
+			Help: "Total number of HTTP requests",
+		},
+		[]string{"path", "method"},
+	)
 
-    httpRequestDuration = prometheus.NewHistogramVec(
-        prometheus.HistogramOpts{
-            Name:    "frontend_http_request_duration_seconds",
-            Help:    "Duration of HTTP requests",
-            Buckets: prometheus.DefBuckets,
-        },
-        []string{"path", "method"},
-    )
+	httpRequestDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "frontend_http_request_duration_seconds",
+			Help:    "Duration of HTTP requests",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"path", "method"},
+	)
 )
 
 
@@ -114,15 +115,18 @@ type frontendServer struct {
 }
 
 func prometheusMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        start := time.Now()
-        next.ServeHTTP(w, r)
-        duration := time.Since(start).Seconds()
-        path := r.URL.Path
-        method := r.Method
-        httpRequestsTotal.WithLabelValues(path, method).Inc()
-        httpRequestDuration.WithLabelValues(path, method).Observe(duration)
-    })
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		next.ServeHTTP(w, r)
+		duration := time.Since(start).Seconds()
+		path := r.URL.Path
+		method := r.Method
+		// Only track metrics for non-static and non-health check paths to reduce noise
+		if path != "/_healthz" && path != "/health" {
+			httpRequestsTotal.WithLabelValues(path, method).Inc()
+			httpRequestDuration.WithLabelValues(path, method).Observe(duration)
+		}
+	})
 }
 
 func main() {
@@ -204,10 +208,19 @@ func main() {
 	prometheus.MustRegister(httpRequestsTotal)
 	prometheus.MustRegister(httpRequestDuration)
 	
+	go func() {
+		muxMetrics := http.NewServeMux()
+		muxMetrics.Handle("/metrics", promhttp.Handler())
+		log.Infof("Prometheus metrics available on :%s/metrics", metricsPort)
+		if err := http.ListenAndServe(":"+metricsPort, muxMetrics); err != nil {
+			log.Errorf("failed to start metrics server: %v", err)
+		}
+	}()
+
 	var handler http.Handler = prometheusMiddleware(r)
-	handler = &logHandler{log: log, next: handler}     // add logging
-	handler = ensureSessionID(handler)                 // add session ID
-	handler = otelhttp.NewHandler(handler, "frontend") // add OTel tracing
+	handler = &logHandler{log: log, next: handler}     // existing logging
+	handler = ensureSessionID(handler)                 // existing session ID
+	handler = otelhttp.NewHandler(handler, "frontend") // existing OTel tracing
 
 	log.Infof("starting server on %s:%s", addr, srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))

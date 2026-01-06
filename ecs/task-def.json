@@ -12,7 +12,7 @@
             "name": "frontend",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:frontend-latest",
             "essential": true,
-            "portMappings": [{"containerPort": 8080, "protocol": "tcp"}], 
+            "portMappings": [{"containerPort": 8080, "protocol": "tcp"}, {"containerPort": 9093, "protocol": "tcp"}], 
             "environment": [
                 {"name": "EMAIL_SERVICE_ADDR", "value": "localhost:8081"},
                 {"name": "SHOPPING_ASSISTANT_SERVICE_ADDR", "value": "localhost:8082"},
@@ -55,7 +55,7 @@
           "name": "checkoutservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:checkout-latest",
             "essential": true,
-            "portMappings": [{"containerPort": 5050, "protocol": "tcp"}],
+            "portMappings": [{"containerPort": 5050, "protocol": "tcp"}, {"containerPort": 9091, "protocol": "tcp"}],
             "environment": [
                 {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "localhost:3550"},
                 {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},

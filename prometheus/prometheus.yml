@@ -13,7 +13,7 @@ scrape_configs:
   - job_name: 'frontend'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:8080']
+      - targets: ['localhost:9091']
         labels:
           service: 'frontend'
           tier: 'web'

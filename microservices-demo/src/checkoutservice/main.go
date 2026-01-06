@@ -47,6 +47,7 @@ import (
 
 const (
 	listenPort  = "5050"
+	metricsPort = "9091"
 	usdCurrency = "USD"
 )
 
@@ -177,11 +178,16 @@ func main() {
 	prometheus.MustRegister(checkoutErrors)
 	prometheus.MustRegister(checkoutDuration)
 
-	// Expose /metrics endpoint
+	// Initialize metrics to 0 so they appear in Grafana immediately on startup
+	checkoutRequests.Add(0)
+	checkoutErrors.Add(0)
+
+	// Expose /metrics endpoint on the designated metrics port (9091)
 	go func() {
-		http.Handle("/metrics", promhttp.Handler())
-		log.Info("Prometheus metrics available on :9091/metrics")
-		if err := http.ListenAndServe(":9091", nil); err != nil {
+		mux := http.NewServeMux()
+		mux.Handle("/metrics", promhttp.Handler())
+		log.Infof("Prometheus metrics available on :%s/metrics", metricsPort)
+		if err := http.ListenAndServe(":"+metricsPort, mux); err != nil {
 			log.Fatalf("Failed to start metrics server: %v", err)
 		}
 	}()
