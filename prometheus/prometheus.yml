@@ -29,7 +29,7 @@ scrape_configs:
   - job_name: 'checkoutservice'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['checkoutservice:5050']
+      - targets: ['checkoutservice:9090']
         labels:
           service: 'checkoutservice'
           tier: 'backend'

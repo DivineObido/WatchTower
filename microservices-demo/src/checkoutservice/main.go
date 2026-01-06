@@ -180,8 +180,8 @@ func main() {
 	// Expose /metrics endpoint
 	go func() {
 		http.Handle("/metrics", promhttp.Handler())
-		log.Info("Prometheus metrics available on :5050/metrics")
-		if err := http.ListenAndServe(":5050", nil); err != nil {
+		log.Info("Prometheus metrics available on :9090/metrics")
+		if err := http.ListenAndServe(":9090", nil); err != nil {
 			log.Fatalf("Failed to start metrics server: %v", err)
 		}
 	}()
