@@ -55,10 +55,7 @@
           "name": "checkoutservice",
             "image": "288761756960.dkr.ecr.us-east-1.amazonaws.com/watchtower-repo:checkout-latest",
             "essential": true,
-            "portMappings": [
-                {"containerPort": 5050, "protocol": "tcp"},
-                {"containerPort": 9090, "protocol": "tcp"}
-            ],
+            "portMappings": [{"containerPort": 5050, "protocol": "tcp"}],
             "environment": [
                 {"name": "PRODUCT_CATALOG_SERVICE_ADDR", "value": "localhost:3550"},
                 {"name": "SHIPPING_SERVICE_ADDR", "value": "localhost:50051"},
