@@ -52,6 +52,15 @@ resource "aws_security_group" "ecs_sg" {
   }
 }
 
+resource "aws_security_group_rule" "ecs_self_ingress_metrics" {
+  type              = "ingress"
+  description       = "Allow internal scraping of metrics"
+  from_port         = 9091
+  to_port           = 9093
+  protocol          = "tcp"
+  security_group_id = aws_security_group.ecs_sg.id
+  self              = true
+}
 # resource "aws_ecs_task_definition" "task" {
 #   family = "watchTower-task"
 #   network_mode = "awsvpc"
