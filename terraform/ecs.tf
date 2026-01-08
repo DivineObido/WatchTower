@@ -196,6 +196,12 @@ resource "aws_ecs_service" "watchTower_service" {
     container_port = 8080
   }
 
+  load_balancer {
+    target_group_arn = aws_alb_target_group.prometheus_tg.arn
+    container_name = "prometheus"
+    container_port = 9090
+  }
+
   service_registries {
     registry_arn = aws_service_discovery_service.prometheus_sd.arn
   }

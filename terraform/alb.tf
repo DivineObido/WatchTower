@@ -80,6 +80,27 @@ resource "aws_alb_target_group" "grafana_tg" {
   }
 }
 
+# Prometheus target Group
+resource "aws_alb_target_group" "prometheus_tg" {
+  name = "prometheus-tg"
+  port = 9090
+  protocol = "HTTP"
+  vpc_id = aws_vpc.watchtower.id
+  target_type = "ip"
+  deregistration_delay = 30
+
+  health_check {
+    protocol= "HTTP"
+    port = "traffic-port"
+    path = "/-/ready"
+    interval = 30
+    timeout = 5
+    healthy_threshold = 2
+    unhealthy_threshold = 6
+    matcher = "200"
+  }
+}
+
 resource "aws_alb_listener" "https_listener" {
   load_balancer_arn = aws_alb.watchTower_alb.arn
   port = 443
@@ -121,3 +142,16 @@ resource "aws_alb_listener_rule" "grafana_http_listener" {
   }
 }
 
+resource "aws_alb_listener_rule" "prometheus_http_listener" {
+  listener_arn = aws_alb_listener.https_listener.arn
+  priority = 20
+  action {
+    type = "forward"
+    target_group_arn = aws_alb_target_group.prometheus_tg.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/prometheus/*", "/prometheus"]
+    }
+  }
+}
