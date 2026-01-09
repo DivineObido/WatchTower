@@ -1,11 +1,6 @@
-# WatchTower 🚀
+# WatchTower 
 
-> A comprehensive cloud monitoring solution for microservices applications deployed on AWS ECS Fargate with automated CI/CD and infrastructure as code.
-
-[![AWS](https://img.shields.io/badge/AWS-ECS%20Fargate-FF9900?logo=amazon-aws)](https://aws.amazon.com/ecs/)
-[![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform)](https://www.terraform.io/)
-[![Prometheus](https://img.shields.io/badge/Monitoring-Prometheus-E6522C?logo=prometheus)](https://prometheus.io/)
-[![Grafana](https://img.shields.io/badge/Visualization-Grafana-F46800?logo=grafana)](https://grafana.com/)
+A cloud monitoring solution for microservices applications using Promethues and Grafana and is deployed on AWS ECS Fargate with automated CI/CD and infrastructure as code.
 
 ## 📋 Table of Contents
 
@@ -26,7 +21,7 @@
 
 ---
 
-## 🎯 Overview
+## Overview
 
 **WatchTower** is a production-ready monitoring and deployment solution that automatically monitors metrics from a multi-microservice e-commerce application. The project demonstrates modern DevOps practices including containerization, infrastructure as code, continuous deployment, and comprehensive observability.
 
@@ -40,87 +35,34 @@ This project showcases:
 
 ---
 
-## 🏗️ Architecture
-
-### High-Level Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         AWS Cloud                            │
-│                                                              │
-│  ┌────────────────────────────────────────────────────┐    │
-│  │              Application Load Balancer              │    │
-│  └───────────────────┬────────────────────────────────┘    │
-│                      │                                       │
-│  ┌───────────────────▼───────────────────────────────┐     │
-│  │              ECS Cluster (Fargate)                 │     │
-│  │                                                     │     │
-│  │  ┌─────────────────────────────────────────────┐  │     │
-│  │  │         Main Task (10 Containers)           │  │     │
-│  │  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  │  │     │
-│  │  │  │ Frontend │  │   Cart   │  │  Email   │  │  │     │
-│  │  │  └──────────┘  └──────────┘  └──────────┘  │  │     │
-│  │  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  │  │     │
-│  │  │  │ Payment  │  │ Checkout │  │ Shipping │  │  │     │
-│  │  │  └──────────┘  └──────────┘  └──────────┘  │  │     │
-│  │  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  │  │     │
-│  │  │  │ Product  │  │ Currency │  │  Recom.  │  │  │     │
-│  │  │  └──────────┘  └──────────┘  └──────────┘  │  │     │
-│  │  │  ┌──────────┐                              │  │     │
-│  │  │  │Prometheus│  ← Scrapes metrics          │  │     │
-│  │  │  └──────────┘                              │  │     │
-│  │  └─────────────────────────────────────────────┘  │     │
-│  │                                                     │     │
-│  │  ┌─────────────────────────────────────────────┐  │     │
-│  │  │         Grafana Task (Separate)             │  │     │
-│  │  │  ┌──────────┐                               │  │     │
-│  │  │  │ Grafana  │  ← Queries Prometheus        │  │     │
-│  │  │  └──────────┘                               │  │     │
-│  │  └─────────────────────────────────────────────┘  │     │
-│  └─────────────────────────────────────────────────┘     │
-│                                                           │
-│  ┌────────────────┐  ┌────────────────┐                 │
-│  │      ECR        │  │   CloudWatch   │                 │
-│  │ (Docker Images)│  │     Logs       │                 │
-│  └────────────────┘  └────────────────┘                 │
-└───────────────────────────────────────────────────────────┘
-
-         ▲                                    ▲
-         │                                    │
-    ┌────┴─────┐                        ┌────┴─────┐
-    │ GitHub   │                        │Terraform │
-    │ Actions  │                        │   IaC    │
-    │  CI/CD   │                        │          │
-    └──────────┘                        └──────────┘
-```
+## Architecture
+<img width="841" height="583" alt="Screenshot 2026-01-09 134541" src="https://github.com/user-attachments/assets/1e0b1deb-9ff0-461c-8dd1-c4a0f1fdb792" />
 
 ### Container Distribution
 
 **Main Task (10 containers - ECS limit):**
-1. Frontend (Go)
-2. Email Service (Python)
-3. Checkout Service (Go)
-4. Shipping Service (Go)
-5. Recommendation Service (Python)
-6. Cart Service (C#)
-7. Currency Service (Node.js)
-8. Product Catalog Service (Go)
-9. Payment Service (Node.js)
-10. Prometheus (Monitoring)
+1. Frontend 
+2. Email Service
+3. Checkout Service
+4. Shipping Service
+5. Recommendation Service
+6. Cart Service
+7. Currency Service 
+8. Product Catalog Service
+9. Payment Service
+10. Prometheus
 
 **Grafana Task (Separate):**
 - Grafana (Visualization)
 
 > **Note:** Grafana is in a separate task because AWS ECS Fargate has a 10-container limit per task. In a production environment, each microservice would ideally have its own task for better isolation and scalability.
 
----
-
-## ✨ Features
+## Features
 
 ### Core Features
 - **Automated Deployment:** Push to main branch triggers automatic build and deployment
-- **Real-time Monitoring:** Prometheus scrapes metrics from instrumented services
-- **Visual Dashboards:** Grafana provides beautiful, customizable dashboards
+- **Real-time Monitoring:** Prometheus scrapes metrics from instrumented services. For this project my instrumented Services are frontend and Checout service
+- **Visual Dashboards:** Grafana visualizes metric on dashboard
 - **Infrastructure as Code:** Entire AWS infrastructure defined in Terraform
 - **Multi-Service Architecture:** 9 microservices working together
 - **Container Orchestration:** AWS ECS Fargate manages containerized services
@@ -129,16 +71,14 @@ This project showcases:
 - **Centralized Logging:** CloudWatch Logs aggregates logs from all services
 
 ### DevOps Practices
-- ✅ Continuous Integration/Continuous Deployment (CI/CD)
-- ✅ Infrastructure as Code (IaC)
-- ✅ Containerization
-- ✅ Observability & Monitoring
-- ✅ Automated Testing & Deployment
-- ✅ Security Groups & Network Isolation
-- ✅ Load Balancing
-- ✅ Service Discovery
-
----
+- Continuous Integration/Continuous Deployment (CI/CD)
+- Infrastructure as Code (IaC)
+- Containerization
+- Observability & Monitoring
+- Automated Testing & Deployment
+- Security Groups & Network Isolation
+- Load Balancing
+- Service Discovery
 
 ## 🛠️ Tech Stack
 
@@ -154,13 +94,13 @@ This project showcases:
 ### Monitoring & Observability
 - **Prometheus** - Metrics collection and storage
 - **Grafana** - Metrics visualization and dashboards
-- **CloudWatch** - AWS native monitoring
+- **CloudWatch** - AWS native monitoring. Important for debugging
 
 ### CI/CD
 - **GitHub Actions** - Automated build and deployment pipeline
 - **Docker** - Containerization
 
-### Application Services (Polyglot Microservices)
+### Application Services Polyglot Microservices)
 - **Go** - Frontend, Checkout, Shipping, Product Catalog
 - **Python** - Email, Recommendation
 - **Node.js** - Currency, Payment
@@ -210,8 +150,6 @@ WatchTower/
 └── README.md
 ```
 
----
-
 ## 📋 Prerequisites
 
 Before you begin, ensure you have:
@@ -231,9 +169,8 @@ Before you begin, ensure you have:
 - IAM (create roles and policies)
 - CloudWatch (create log groups)
 
----
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -373,19 +310,9 @@ graph LR
 5. **Deploy:** Updates ECS services with new task definitions
 6. **Verify:** Waits for services to reach stable state
 
-### Key Features
-- ✅ Parallel image building for faster deployments
-- ✅ Automatic rollback on failure
-- ✅ Health check validation
-- ✅ Zero-downtime deployments
-- ✅ Separate workflows for main app and Grafana
-
----
-
-## 📊 Monitoring Stack
+## Monitoring Stack
 
 ### Prometheus Configuration
-
 Prometheus scrapes metrics from instrumented services every 30 seconds:
 
 **Instrumented Services:**
@@ -424,45 +351,7 @@ Access Grafana to visualize metrics:
    histogram_quantile(0.95, rate(frontend_http_request_duration_seconds_bucket[5m]))
    ```
 
-3. **Import Pre-built Dashboards:**
-   - Prometheus 2.0 Stats (ID: 3662)
-   - Node Exporter Full (ID: 1860)
-
-### Adding Metrics to Other Services
-
-To instrument additional services:
-
-**Go Services:**
-```go
-import (
-    "github.com/prometheus/client_golang/prometheus"
-    "github.com/prometheus/client_golang/prometheus/promhttp"
-)
-
-// Define metrics
-var requestCounter = prometheus.NewCounter(...)
-
-// Register metrics
-prometheus.MustRegister(requestCounter)
-
-// Expose endpoint
-http.Handle("/metrics", promhttp.Handler())
-```
-
-**Python Services:**
-```python
-from prometheus_client import Counter, Histogram, start_http_server
-
-# Define metrics
-request_counter = Counter('requests_total', 'Total requests')
-
-# Expose endpoint
-start_http_server(8000)
-```
-
----
-
-## 🏗️ Infrastructure
+##  Infrastructure
 
 ### AWS Resources Created
 
@@ -490,78 +379,8 @@ start_http_server(8000)
 - Security Groups for ALB, ECS, Grafana
 - IAM Roles for ECS Task Execution
 
-### Cost Estimation
 
-**Monthly costs (approximate):**
-- ECS Fargate Tasks: ~$50-80
-- Application Load Balancer: ~$20
-- Data Transfer: ~$10
-- CloudWatch Logs: ~$5
-- **Total:** ~$85-115/month
-
-> **Tip:** Use AWS Free Tier where applicable to reduce costs.
-
----
-
-## 💡 Lessons Learned
-
-### Challenges & Solutions
-
-1. **ECS 10-Container Limit**
-   - **Challenge:** Needed 11 containers (10 services + Prometheus + Grafana)
-   - **Solution:** Split into 2 tasks - main task with 10 containers, separate Grafana task
-   - **Production Approach:** Each service should have its own task for better isolation
-
-2. **Service Discovery Between Tasks**
-   - **Challenge:** Grafana (separate task) couldn't reach Prometheus via Cloud Map DNS
-   - **Solution:** Used private IP address for inter-task communication
-   - **Production Approach:** Implement AWS Cloud Map or internal ALB for stable endpoints
-
-3. **Port Conflicts**
-   - **Challenge:** Multiple services trying to use the same ports
-   - **Solution:** Carefully mapped unique ports for each service
-   - **Learning:** Always document port assignments clearly
-
-4. **GitHub Actions Image Building**
-   - **Challenge:** Building 10 images sequentially was slow
-   - **Solution:** Optimized workflow with proper caching
-   - **Future:** Implement parallel builds for faster deployments
-
-5. **Prometheus Scrape Configuration**
-   - **Challenge:** Initially used service names instead of `localhost`
-   - **Solution:** All containers in same task must communicate via `localhost`
-   - **Learning:** Understand ECS networking models (bridge vs awsvpc)
-
----
-
-## 🚀 Future Improvements
-
-### Short Term
-- [ ] Add metrics instrumentation to remaining services
-- [ ] Implement persistent storage for Grafana (EFS)
-- [ ] Create custom Grafana dashboards
-- [ ] Add alerting rules in Prometheus
-- [ ] Implement log aggregation and analysis
-
-### Medium Term
-- [ ] Split each service into separate ECS tasks
-- [ ] Implement AWS Cloud Map for service discovery
-- [ ] Add internal ALB for inter-service communication
-- [ ] Implement auto-scaling policies
-- [ ] Add SSL/TLS certificates
-- [ ] Implement AWS Secrets Manager for sensitive data
-
-### Long Term
-- [ ] Migrate to EKS for Kubernetes orchestration
-- [ ] Implement distributed tracing (AWS X-Ray/Jaeger)
-- [ ] Add CI/CD testing stages
-- [ ] Implement blue-green deployments
-- [ ] Add cost optimization with Spot instances
-- [ ] Implement disaster recovery and backups
-
----
-
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -577,15 +396,7 @@ Contributions are welcome! Please follow these steps:
 - Add tests where applicable
 - Ensure all workflows pass before submitting PR
 
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **Base Application:** Forked from [Google Cloud Platform's Microservices Demo](https://github.com/GoogleCloudPlatform/microservices-demo)
 - **Monitoring Tools:** Prometheus and Grafana communities
@@ -600,22 +411,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - GitHub: [@DivineObido](https://github.com/DivineObido)
 - Project Link: [https://github.com/DivineObido/WatchTower](https://github.com/DivineObido/WatchTower)
 
----
-
-## 📸 Screenshots
+## Screenshots
 
 ### Application Dashboard
-![Application Screenshot](docs/images/app-screenshot.png)
+
 
 ### Grafana Monitoring
-![Grafana Dashboard](docs/images/grafana-dashboard.png)
-
-### Prometheus Targets
-![Prometheus Targets](docs/images/prometheus-targets.png)
 
 ### AWS ECS Console
-![ECS Console](docs/images/ecs-console.png)
+<img width="1899" height="930" alt="Screenshot 2026-01-06 165826" src="https://github.com/user-attachments/assets/fb8e5695-2ad4-4866-98e0-16252ff8daa9" />
 
----
 
 **⭐ If you found this project helpful, please consider giving it a star!**
