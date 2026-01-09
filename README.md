@@ -403,20 +403,14 @@ Contributions are welcome! Please follow these steps:
 - **Cloud Platform:** AWS for ECS Fargate capabilities
 - **CI/CD:** GitHub Actions for seamless automation
 
----
-
-## 📧 Contact
-
-**Divine Obido**
-- GitHub: [@DivineObido](https://github.com/DivineObido)
-- Project Link: [https://github.com/DivineObido/WatchTower](https://github.com/DivineObido/WatchTower)
 
 ## Screenshots
 
 ### Application Dashboard
-
+<img width="1896" height="1031" alt="Screenshot 2026-01-02 222643" src="https://github.com/user-attachments/assets/feae2dfe-aaf4-430b-884b-7420bf696fc8" />
 
 ### Grafana Monitoring
+<img width="1905" height="1035" alt="Screenshot 2026-01-08 011827" src="https://github.com/user-attachments/assets/cb5e59ca-b421-4119-b76d-d4d7908f21d7" />
 
 ### AWS ECS Console
 <img width="1899" height="930" alt="Screenshot 2026-01-06 165826" src="https://github.com/user-attachments/assets/fb8e5695-2ad4-4866-98e0-16252ff8daa9" />
