@@ -2,7 +2,7 @@
 
 A cloud monitoring solution for microservices applications using Promethues and Grafana and is deployed on AWS ECS Fargate with automated CI/CD and infrastructure as code.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -26,12 +26,12 @@ A cloud monitoring solution for microservices applications using Promethues and 
 **WatchTower** is a production-ready monitoring and deployment solution that automatically monitors metrics from a multi-microservice e-commerce application. The project demonstrates modern DevOps practices including containerization, infrastructure as code, continuous deployment, and comprehensive observability.
 
 This project showcases:
-- ✅ Automated deployment of 9 microservices to AWS ECS Fargate
-- ✅ Complete observability stack with Prometheus and Grafana
-- ✅ Infrastructure as Code using Terraform
-- ✅ CI/CD pipeline with GitHub Actions
-- ✅ Multi-container task architecture
-- ✅ Custom metrics instrumentation
+- Automated deployment of 9 microservices to AWS ECS Fargate
+- Complete observability stack with Prometheus and Grafana
+- Infrastructure as Code using Terraform
+- CI/CD pipeline with GitHub Actions
+- Multi-container task architecture
+- Custom metrics instrumentation
 
 ---
 
